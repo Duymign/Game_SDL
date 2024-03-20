@@ -30,17 +30,17 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add directory="../SDL_lib/SDL2-devel-2.28.5-mingw/SDL2-2.28.5/x86_64-w64-mingw32/include/SDL2" />
-			<Add directory="../SDL_lib/SDL2_image-devel-2.8.2-mingw/SDL2_image-2.8.2/x86_64-w64-mingw32/include/SDL2" />
-			<Add directory="../SDL_lib/SDL2_ttf-devel-2.22.0-mingw/SDL2_ttf-2.22.0/x86_64-w64-mingw32/include/SDL2" />
+			<Add directory="D:/SDL_lib/SDL2-devel-2.28.5-mingw/SDL2-2.28.5/x86_64-w64-mingw32/include/SDL2" />
+			<Add directory="D:/SDL_lib/SDL2_image-devel-2.8.2-mingw/SDL2_image-2.8.2/x86_64-w64-mingw32/include/SDL2" />
+			<Add directory="D:/SDL_lib/SDL2_ttf-devel-2.22.0-mingw/SDL2_ttf-2.22.0/x86_64-w64-mingw32/include/SDL2" />
 		</Compiler>
 		<Linker>
 			<Add option="-lmingw32 -lSDL2main -lSDL2" />
 			<Add option="-lSDL2_image" />
 			<Add option="-lSDL2_ttf" />
-			<Add directory="../SDL_lib/SDL2-devel-2.28.5-mingw/SDL2-2.28.5/x86_64-w64-mingw32/lib" />
-			<Add directory="../SDL_lib/SDL2_image-devel-2.8.2-mingw/SDL2_image-2.8.2/x86_64-w64-mingw32/lib" />
-			<Add directory="../SDL_lib/SDL2_ttf-devel-2.22.0-mingw/SDL2_ttf-2.22.0/x86_64-w64-mingw32/lib" />
+			<Add directory="D:/SDL_lib/SDL2-devel-2.28.5-mingw/SDL2-2.28.5/x86_64-w64-mingw32/lib" />
+			<Add directory="D:/SDL_lib/SDL2_image-devel-2.8.2-mingw/SDL2_image-2.8.2/x86_64-w64-mingw32/lib" />
+			<Add directory="D:/SDL_lib/SDL2_ttf-devel-2.22.0-mingw/SDL2_ttf-2.22.0/x86_64-w64-mingw32/lib" />
 		</Linker>
 		<Unit filename="BaseFunc.cpp" />
 		<Unit filename="BaseFunc.h" />
