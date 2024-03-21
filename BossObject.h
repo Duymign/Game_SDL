@@ -71,6 +71,9 @@ public:
     float get_x_pos(){return x_pos;}
     float get_y_pos(){return y_pos;}
     void setStatus(const int&x){status = x;}
+    void setHp(const int& x){hp = x;}
+    void setFrameDie(){frame_die = -1;}
+
     int getStatus(){return status;}
     SDL_Rect* get_frame_clip_run(){return frame_clip_run;}
     SDL_Texture* get_texture_right(){return Boss_Right;}
@@ -90,6 +93,7 @@ public:
     int get_frame_die(){return frame_die;}
     bool get_status_attack(){return _attack;}
     void Die(Graphics &graphics);
+    void reset();
 
 };
 

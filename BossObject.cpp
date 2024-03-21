@@ -43,35 +43,13 @@ void BossObject::set_clip_run()
 {
     if (boss_frame_width_run > 0 && boss_frame_height_run > 0)
     {
-        frame_clip_run[0].x = 0;
-        frame_clip_run[0].y = 0;
-        frame_clip_run[0].w = boss_frame_width_run;
-        frame_clip_run[0].h = boss_frame_height_run;
-
-        frame_clip_run[1].x = boss_frame_width_run;
-        frame_clip_run[1].y = 0;
-        frame_clip_run[1].w = boss_frame_width_run;
-        frame_clip_run[1].h = boss_frame_height_run;
-
-        frame_clip_run[2].x = boss_frame_width_run * 2;
-        frame_clip_run[2].y = 0;
-        frame_clip_run[2].w = boss_frame_width_run;
-        frame_clip_run[2].h = boss_frame_height_run;
-
-        frame_clip_run[3].x = boss_frame_width_run * 3;
-        frame_clip_run[3].y = 0;
-        frame_clip_run[3].w = boss_frame_width_run;
-        frame_clip_run[3].h = boss_frame_height_run;
-
-        frame_clip_run[4].x = boss_frame_width_run * 4;
-        frame_clip_run[4].y = 0;
-        frame_clip_run[4].w = boss_frame_width_run;
-        frame_clip_run[4].h = boss_frame_height_run;
-
-        frame_clip_run[5].x = boss_frame_width_run * 5;
-        frame_clip_run[5].y = 0;
-        frame_clip_run[5].w = boss_frame_width_run;
-        frame_clip_run[5].h = boss_frame_height_run;
+        for (int i=0; i < 6; i++)
+        {
+            frame_clip_run[i].x = boss_frame_width_run * i;
+            frame_clip_run[i].y = 0;
+            frame_clip_run[i].w = boss_frame_width_run;
+            frame_clip_run[i].h = boss_frame_height_run;
+        }
 
     }
 }
@@ -79,74 +57,27 @@ void BossObject::set_clip_attack()
 {
     if (boss_frame_width_attack > 0 && boss_frame_height_attack > 0)
     {
-        frame_clip_attack[0].x = 0;
-        frame_clip_attack[0].y = 0;
-        frame_clip_attack[0].w = boss_frame_width_attack;
-        frame_clip_attack[0].h = boss_frame_height_attack;
-
-        frame_clip_attack[1].x = boss_frame_width_attack;
-        frame_clip_attack[1].y = 0;
-        frame_clip_attack[1].w = boss_frame_width_attack;
-        frame_clip_attack[1].h = boss_frame_height_attack;
-
-        frame_clip_attack[2].x = boss_frame_width_attack * 2;
-        frame_clip_attack[2].y = 0;
-        frame_clip_attack[2].w = boss_frame_width_attack;
-        frame_clip_attack[2].h = boss_frame_height_attack;
-
-        frame_clip_attack[3].x = boss_frame_width_attack * 3;
-        frame_clip_attack[3].y = 0;
-        frame_clip_attack[3].w = boss_frame_width_attack;
-        frame_clip_attack[3].h = boss_frame_height_attack;
-
-        frame_clip_attack[4].x = boss_frame_width_attack * 4;
-        frame_clip_attack[4].y = 0;
-        frame_clip_attack[4].w = boss_frame_width_attack;
-        frame_clip_attack[4].h = boss_frame_height_attack;
-
-        frame_clip_attack[5].x = boss_frame_width_attack * 5;
-        frame_clip_attack[5].y = 0;
-        frame_clip_attack[5].w = boss_frame_width_attack;
-        frame_clip_attack[5].h = boss_frame_height_attack;
-
-        frame_clip_attack[6].x = boss_frame_width_attack * 6;
-        frame_clip_attack[6].y = 0;
-        frame_clip_attack[6].w = boss_frame_width_attack;
-        frame_clip_attack[6].h = boss_frame_height_attack;
-
+        for (int i=0; i < 7; i++)
+        {
+            frame_clip_attack[i].x = boss_frame_width_attack * i;
+            frame_clip_attack[i].y = 0;
+            frame_clip_attack[i].w = boss_frame_width_attack;
+            frame_clip_attack[i].h = boss_frame_height_attack;
+        }
     }
 }
 void BossObject::set_clip_die()
 {
-    frame_clip_die[0].x = 0;
-    frame_clip_die[0].y = 0;
-    frame_clip_die[0].h = boss_frame_height_die;
-    frame_clip_die[0].w = boss_frame_width_die;
 
-    frame_clip_die[1].x = boss_frame_width_die;
-    frame_clip_die[1].y = 0;
-    frame_clip_die[1].h = boss_frame_height_die;
-    frame_clip_die[1].w = boss_frame_width_die;
+for (int i=0; i < 6; i++)
+{
+    frame_clip_die[i].x = boss_frame_width_die * i;
+    frame_clip_die[i].y = 0;
+    frame_clip_die[i].h = boss_frame_height_die;
+    frame_clip_die[i].w = boss_frame_width_die;
 
-    frame_clip_die[2].x = boss_frame_width_die * 2;
-    frame_clip_die[2].y = 0;
-    frame_clip_die[2].h = boss_frame_height_die;
-    frame_clip_die[2].w = boss_frame_width_die;
+}
 
-    frame_clip_die[3].x = boss_frame_width_die * 3;
-    frame_clip_die[3].y = 0;
-    frame_clip_die[3].h = boss_frame_height_die;
-    frame_clip_die[3].w = boss_frame_width_die;
-
-    frame_clip_die[4].x = boss_frame_width_die * 4;
-    frame_clip_die[4].y = 0;
-    frame_clip_die[4].h = boss_frame_height_die;
-    frame_clip_die[4].w = boss_frame_width_die;
-
-    frame_clip_die[5].x = boss_frame_width_die * 5;
-    frame_clip_die[5].y = 0;
-    frame_clip_die[5].h = boss_frame_height_die;
-    frame_clip_die[5].w = boss_frame_width_die;
 }
 void BossObject::Attack(Graphics &graphics)
 {
@@ -263,4 +194,21 @@ void BossObject::Die(Graphics& graphics)
         SDL_Rect* currentClip = &frame_clip_die[5- frame_die];
         graphics.RenderFrame(Die_Left, currentClip, dieRect);
     }
+}
+
+void BossObject::reset()
+{
+    rect.x = 0;
+    rect.y = 0;
+
+    status = walkLeft;
+    x_pos = 0;
+    y_pos = 0;
+    hp = BOSS_MAX_HP;
+    _attack = false;
+    _run = false;
+
+    frame_attack = 6;
+    frame_run = -1;
+    frame_die = -1;
 }

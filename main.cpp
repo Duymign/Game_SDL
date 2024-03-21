@@ -3,9 +3,6 @@
 #include "Menu.h"
 int main(int argc, char* argv[])
 {
-    high_resolution_clock::time_point lastFrame = high_resolution_clock::now();
-    high_resolution_clock::time_point currentTime;
-    duration<int, milli> timeSinceLastFrame ;
 
     bool quit = false;
 
@@ -14,19 +11,15 @@ int main(int argc, char* argv[])
     Menu menu(graphics);
     Game game;
     game.Init(graphics);
-    while (game.enemy_num < 6)
-        {
-            game.InitEnemy(graphics);
-        }
+
     game.doMenu(quit, menu, graphics);
 
     while(!quit)
     {
-        currentTime = high_resolution_clock::now();
-        timeSinceLastFrame = duration_cast<milliseconds> (currentTime - lastFrame);
-
-        if (timeSinceLastFrame.count() >= 1000.0 / 60)
-        {
+        while (game.enemy_num < 6)
+            {
+                game.InitEnemy(graphics);
+            }
             graphics.ClearScr();
             graphics.RenderBackground(game.background);
             game.game_map.renderMap(graphics);
@@ -56,17 +49,21 @@ int main(int argc, char* argv[])
             graphics.RenderHealthBar();
             game.doPlayer(quit, graphics);
             graphics.PresentScr();
-            lastFrame = currentTime;
-            if (game.character.getFrameDie() == 4){
-                MessageBox(NULL, "Game Over!", "Infor", MB_OK);
-                quit = true;
+            if (game.character.getFrameDie() == 4 || game.character.getRect().y > SCREEN_HEIGHT){
+                //MessageBox(NULL, "Game Over!", "Infor", MB_OK);
+                game.restartGame(graphics);
+                menu.setResult(0);//Lose
+                game.doMenuAfterGame(quit, menu, graphics);
+                graphics.PresentScr();
             }
             if (game.boss.get_frame_die() == 5)
             {
-                MessageBox(NULL, "You Win!", "Infor", MB_OK);
-                quit = true;
+                game.restartGame(graphics);
+                menu.setResult(1);//Win
+                game.doMenuAfterGame(quit, menu, graphics);
+                graphics.PresentScr();
             }
-        }
+        SDL_Delay(1000.0/60);
     }
     graphics.quitSDL();
     return 0;

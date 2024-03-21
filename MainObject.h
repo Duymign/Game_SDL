@@ -94,6 +94,8 @@ public:
         rect.h = Height_main_Object;
     }
     void setImg(Graphics &graphics);
+    void setFrameDie(){frame_die = -1;}
+
     void Action(SDL_Event &event);
 
     int getStatus() {return status;}
@@ -143,6 +145,7 @@ public:
     void set_clip_shoot();
     void set_clip_skill();
     void set_clip_die();
+    void setHp(const int &hp){this->hp = hp;}
 
     void walk(const MAP &mapdata,Graphics &graphics);
     void MoveInAir(const MAP& mapdata, Graphics &graphics);
@@ -195,5 +198,7 @@ public:
 
     int get_attack_frame(){return frame_attack;}
     void die(Graphics &graphics);
+    void reset();
+
 };
 #endif // _MainObject_H

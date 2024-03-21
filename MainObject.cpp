@@ -80,185 +80,73 @@ void MainObject::set_clip_shoot()
 {
     if (frame_height_shoot > 0 && frame_width_shoot > 0)
     {
-        frame_clip_shoot[0].x = 0;
-        frame_clip_shoot[0].y = 0;
-        frame_clip_shoot[0].w = frame_width_shoot;
-        frame_clip_shoot[0].h = frame_height_shoot;
+        for (int i=0; i < 3; i++)
+        {
+            frame_clip_shoot[i].x = frame_width_shoot * i;
+            frame_clip_shoot[i].y =0;
+            frame_clip_shoot[i].w = frame_width_shoot;
+            frame_clip_shoot[i].h = frame_height_shoot;
+        }
 
-        frame_clip_shoot[1].x =frame_width_shoot ;
-        frame_clip_shoot[1].y =0;
-        frame_clip_shoot[1].w = frame_width_shoot;
-        frame_clip_shoot[1].h = frame_height_shoot;
-
-        frame_clip_shoot[2].x = frame_width_shoot * 2;
-        frame_clip_shoot[2].y =0;
-        frame_clip_shoot[2].w = frame_width_shoot;
-        frame_clip_shoot[2].h = frame_height_shoot;
     }
 }
 void MainObject::setclip()
 {
     if (frame_width > 0 && frame_height > 0)
     {
-        frame_clip[0].x = 0;
-        frame_clip[0].y = 0;
-        frame_clip[0].w = frame_width;
-        frame_clip[0].h = frame_height;
-
-        frame_clip[1].x = frame_width;
-        frame_clip[1].y = 0;
-        frame_clip[1].w = frame_width;
-        frame_clip[1].h = frame_height;
-
-        frame_clip[2].x = frame_width * 2;
-        frame_clip[2].y = 0;
-        frame_clip[2].w = frame_width;
-        frame_clip[2].h = frame_height;
-
-        frame_clip[3].x = frame_width * 3;
-        frame_clip[3].y = 0;
-        frame_clip[3].w = frame_width;
-        frame_clip[3].h = frame_height;
-
-        frame_clip[4].x = frame_width * 4;
-        frame_clip[4].y = 0;
-        frame_clip[4].w = frame_width;
-        frame_clip[4].h = frame_height;
-
-        frame_clip[5].x = frame_width * 5;
-        frame_clip[5].y = 0;
-        frame_clip[5].w = frame_width;
-        frame_clip[5].h = frame_height;
-
+        for (int i=0; i< 6; i++)
+        {
+            frame_clip[i].x = frame_width * i;
+            frame_clip[i].y = 0;
+            frame_clip[i].w = frame_width;
+            frame_clip[i].h = frame_height;
+        }
     }
 }
 void MainObject::set_clip_jump()
 {
     if (frame_width_jump > 0 && frame_height_jump > 0)
     {
-        frame_clip_jump[0].x = 0;
-        frame_clip_jump[0].y = 0;
-        frame_clip_jump[0].w = frame_width_jump;
-        frame_clip_jump[0].h = frame_height_jump;
-
-        frame_clip_jump[1].x = frame_width_jump;
-        frame_clip_jump[1].y = 0;
-        frame_clip_jump[1].w = frame_width_jump;
-        frame_clip_jump[1].h = frame_height_jump;
-
-        frame_clip_jump[2].x = frame_width_jump * 2;
-        frame_clip_jump[2].y = 0;
-        frame_clip_jump[2].w = frame_width_jump;
-        frame_clip_jump[2].h = frame_height_jump;
-
-        frame_clip_jump[3].x = frame_width_jump * 3;
-        frame_clip_jump[3].y = 0;
-        frame_clip_jump[3].w = frame_width_jump;
-        frame_clip_jump[3].h = frame_height_jump;
-
-        frame_clip_jump[4].x = frame_width_jump * 4;
-        frame_clip_jump[4].y = 0;
-        frame_clip_jump[4].w = frame_width_jump;
-        frame_clip_jump[4].h = frame_height_jump;
-
-        frame_clip_jump[5].x = frame_width_jump * 5;
-        frame_clip_jump[5].y = 0;
-        frame_clip_jump[5].w = frame_width_jump;
-        frame_clip_jump[5].h = frame_height_jump;
-
-        frame_clip_jump[6].x = frame_width_jump * 6;
-        frame_clip_jump[6].y = 0;
-        frame_clip_jump[6].w = frame_width_jump;
-        frame_clip_jump[6].h = frame_height_jump;
-
+        for (int i=0;i < 7; i++)
+        {
+            frame_clip_jump[i].x = frame_width_jump * i;
+            frame_clip_jump[i].y = 0;
+            frame_clip_jump[i].w = frame_width_jump;
+            frame_clip_jump[i].h = frame_height_jump;
+        }
     }
 }
 void MainObject::set_clip_attack()
 {
-        frame_clip_attack[0].x = 0;
-        frame_clip_attack[0].y = 0;
-        frame_clip_attack[0].w = frame_width_attack;
-        frame_clip_attack[0].h = frame_height_attack;
-
-        frame_clip_attack[1].x = frame_width_attack;
-        frame_clip_attack[1].y = 0;
-        frame_clip_attack[1].w = frame_width_attack;
-        frame_clip_attack[1].h = frame_height_attack;
-
-        frame_clip_attack[2].x = frame_width_attack * 2;
-        frame_clip_attack[2].y = 0;
-        frame_clip_attack[2].w = frame_width_attack;
-        frame_clip_attack[2].h = frame_height_attack;
-
-        frame_clip_attack[3].x = frame_width_attack * 3;
-        frame_clip_attack[3].y = 0;
-        frame_clip_attack[3].w = frame_width_attack;
-        frame_clip_attack[3].h = frame_height_attack;
-
-        frame_clip_attack[4].x = frame_width_attack * 4;
-        frame_clip_attack[4].y = 0;
-        frame_clip_attack[4].w = frame_width_attack;
-        frame_clip_attack[4].h = frame_height_attack;
+    for (int i=0; i < 5; i++)
+    {
+        frame_clip_attack[i].x = frame_width_attack * i;
+        frame_clip_attack[i].y = 0;
+        frame_clip_attack[i].w = frame_width_attack;
+        frame_clip_attack[i].h = frame_height_attack;
+    }
 
 }
 void MainObject::set_clip_skill()
 {
-    frame_clip_skill[0].x = 0;
-    frame_clip_skill[0].y = 0;
-    frame_clip_skill[0].w = frame_width_skill;
-    frame_clip_skill[0].h = frame_height_skill;
+    for (int i=0; i < 6; i++)
+    {
+        frame_clip_skill[i].x = frame_width_skill * i;
+        frame_clip_skill[i].y = 0;
+        frame_clip_skill[i].w = frame_width_skill;
+        frame_clip_skill[i].h = frame_height_skill;
+    }
 
-    frame_clip_skill[1].x = frame_width_skill;
-    frame_clip_skill[1].y = 0;
-    frame_clip_skill[1].w = frame_width_skill;
-    frame_clip_skill[1].h = frame_height_skill;
-
-    frame_clip_skill[2].x = frame_width_skill * 2;
-    frame_clip_skill[2].y = 0;
-    frame_clip_skill[2].w = frame_width_skill;
-    frame_clip_skill[2].h = frame_height_skill;
-
-    frame_clip_skill[3].x = frame_width_skill * 3;
-    frame_clip_skill[3].y = 0;
-    frame_clip_skill[3].w = frame_width_skill;
-    frame_clip_skill[3].h = frame_height_skill;
-
-    frame_clip_skill[4].x = frame_width_skill * 4;
-    frame_clip_skill[4].y = 0;
-    frame_clip_skill[4].w = frame_width_skill;
-    frame_clip_skill[4].h = frame_height_skill;
-
-    frame_clip_skill[5].x = frame_width_skill * 5;
-    frame_clip_skill[5].y = 0;
-    frame_clip_skill[5].w = frame_width_skill;
-    frame_clip_skill[5].h = frame_height_skill;
 }
 void MainObject::set_clip_die()
 {
-    frame_clip_die[0].x = 0;
-    frame_clip_die[0].y = 0;
-    frame_clip_die[0].w = frame_width_die;
-    frame_clip_die[0].h = frame_height_die;
-
-    frame_clip_die[1].x = frame_width_die;
-    frame_clip_die[1].y = 0;
-    frame_clip_die[1].w = frame_width_die;
-    frame_clip_die[1].h = frame_height_die;
-
-    frame_clip_die[2].x = frame_width_die *2;
-    frame_clip_die[2].y = 0;
-    frame_clip_die[2].w = frame_width_die;
-    frame_clip_die[2].h = frame_height_die;
-
-    frame_clip_die[3].x = frame_width_die * 3;
-    frame_clip_die[3].y = 0;
-    frame_clip_die[3].w = frame_width_die;
-    frame_clip_die[3].h = frame_height_die;
-
-    frame_clip_die[4].x = frame_width_die *4;
-    frame_clip_die[4].y = 0;
-    frame_clip_die[4].w = frame_width_die;
-    frame_clip_die[4].h = frame_height_die;
+    for (int i=0; i < 5; i++)
+    {
+        frame_clip_die[i].x = frame_width_die *i;
+        frame_clip_die[i].y = 0;
+        frame_clip_die[i].w = frame_width_die;
+        frame_clip_die[i].h = frame_height_die;
+    }
 }
 void MainObject::Action(SDL_Event &event)
 {
@@ -680,4 +568,28 @@ void MainObject::die(Graphics &graphics)
         graphics.RenderFrame(dieLeft, currentClip, dieRect);
     }
 
+}
+void MainObject::reset()
+{
+    rect.x = 100;
+    rect.y = 70;
+
+    y_ =0;
+    x_pos = 100;
+    y_pos = 70;
+    map_x = 0;
+    map_y = 0;
+
+    frame_walk = -1;
+    frame_attack = -1;
+    frame_shoot = -1;
+    frame_jump = -1;
+    frame_skill = -1;
+    frame_die = -1;
+
+    status = walkRight;
+
+    hp = Main_Max_Hp;
+    on_the_ground = false;
+    up_ = false; down_ = false; left_ = false; right_ = false; attack_ = false; shoot_= false; skill_ = false;
 }

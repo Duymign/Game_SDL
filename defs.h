@@ -41,7 +41,7 @@ const int timeSetShoot = 600;
 const float character_speed = Width_main_object/4 ;
 const float gravity_speed = 1.2;
 
-#define MAX_FALL_SPEED 5
+#define MAX_FALL_SPEED 6
 #define ATTACK_DAMGE 10
 #define SHOOT_DAMGE 15
 #define SKILL_DAMGE 20

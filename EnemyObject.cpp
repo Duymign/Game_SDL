@@ -48,91 +48,47 @@ void EnemyObject::setImg(Graphics &graphics)
 }
 void EnemyObject::set_clip_run()
 {
-        frame_clip_run[0].x = 0;
-        frame_clip_run[0].y = 0;
-        frame_clip_run[0].w = enemy_frame_width_run;
-        frame_clip_run[0].h = enemy_frame_height_run;
+    for (int i=0; i < 6; i++)
+    {
+        frame_clip_run[i].x = enemy_frame_width_run * i;
+        frame_clip_run[i].y = 0;
+        frame_clip_run[i].w = enemy_frame_width_run;
+        frame_clip_run[i].h = enemy_frame_height_run;
+    }
 
-        frame_clip_run[1].x = enemy_frame_width_run;
-        frame_clip_run[1].y = 0;
-        frame_clip_run[1].w = enemy_frame_width_run;
-        frame_clip_run[1].h = enemy_frame_height_run;
-
-        frame_clip_run[2].x = enemy_frame_width_run * 2;
-        frame_clip_run[2].y = 0;
-        frame_clip_run[2].w = enemy_frame_width_run;
-        frame_clip_run[2].h = enemy_frame_height_run;
-
-        frame_clip_run[3].x = enemy_frame_width_run * 3;
-        frame_clip_run[3].y = 0;
-        frame_clip_run[3].w = enemy_frame_width_run;
-        frame_clip_run[3].h = enemy_frame_height_run;
-
-        frame_clip_run[4].x = enemy_frame_width_run * 4;
-        frame_clip_run[4].y = 0;
-        frame_clip_run[4].w = enemy_frame_width_run;
-        frame_clip_run[4].h = enemy_frame_height_run;
-
-        frame_clip_run[5].x = enemy_frame_width_run * 5;
-        frame_clip_run[5].y = 0;
-        frame_clip_run[5].w = enemy_frame_width_run;
-        frame_clip_run[5].h = enemy_frame_height_run;
 }
 void EnemyObject::set_clip_attack()
 {
-        frame_clip_attack[0].x = 0;
-        frame_clip_attack[0].y = 0;
-        frame_clip_attack[0].w = enemy_frame_width_attack;
-        frame_clip_attack[0].h = enemy_frame_height_attack;
+    for (int i=0; i < 4; i++)
+    {
+        frame_clip_attack[i].x = enemy_frame_width_attack * i;
+        frame_clip_attack[i].y = 0;
+        frame_clip_attack[i].w = enemy_frame_width_attack;
+        frame_clip_attack[i].h = enemy_frame_height_attack;
+    }
 
-        frame_clip_attack[1].x = enemy_frame_width_attack;
-        frame_clip_attack[1].y = 0;
-        frame_clip_attack[1].w = enemy_frame_width_attack;
-        frame_clip_attack[1].h = enemy_frame_height_attack;
-
-        frame_clip_attack[2].x = enemy_frame_width_attack * 2;
-        frame_clip_attack[2].y = 0;
-        frame_clip_attack[2].w = enemy_frame_width_attack;
-        frame_clip_attack[2].h = enemy_frame_height_attack;
-
-        frame_clip_attack[3].x = enemy_frame_width_attack * 3;
-        frame_clip_attack[3].y = 0;
-        frame_clip_attack[3].w = enemy_frame_width_attack;
-        frame_clip_attack[3].h = enemy_frame_height_attack;
 }
 void EnemyObject::set_clip_hurt()
 {
-    frame_clip_hurt[0].x = 0;
-    frame_clip_hurt[0].y = 0;
-    frame_clip_hurt[0].w = enemy_frame_width_hurt;
-    frame_clip_hurt[0].h = enemy_frame_height_hurt;
+    for (int i=0; i < 2; i++)
+    {
+        frame_clip_hurt[i].x = enemy_frame_width_hurt * i;
+        frame_clip_hurt[i].y = 0;
+        frame_clip_hurt[i].w = enemy_frame_width_hurt;
+        frame_clip_hurt[i].h = enemy_frame_height_hurt;
+    }
 
-    frame_clip_hurt[1].x = enemy_frame_width_hurt;
-    frame_clip_hurt[1].y = 0;
-    frame_clip_hurt[1].w = enemy_frame_width_hurt;
-    frame_clip_hurt[1].h = enemy_frame_height_hurt;
+
 }
 void EnemyObject::set_clip_die()
 {
-    frame_clip_die[0].x = 0;
-    frame_clip_die[0].y =0;
-    frame_clip_die[0].w = enemy_frame_width_die;
-    frame_clip_die[0].h = enemy_frame_height_die;
-
-    frame_clip_die[1].x = enemy_frame_width_die;
-    frame_clip_die[1].y =0;
-    frame_clip_die[1].w = enemy_frame_width_die;
-    frame_clip_die[1].h = enemy_frame_height_die;
-
-    frame_clip_die[2].x = enemy_frame_width_die * 2;
-    frame_clip_die[2].y =0;
-    frame_clip_die[2].w = enemy_frame_width_die;
-    frame_clip_die[2].h = enemy_frame_height_die;
-
-    frame_clip_die[3].x = enemy_frame_width_die * 3;
-    frame_clip_die[3].y =0;
-    frame_clip_die[3].w = enemy_frame_width_die;
-    frame_clip_die[3].h = enemy_frame_height_die;
+    for (int i=0; i < 4; i++)
+    {
+        frame_clip_die[i].x = enemy_frame_width_die * i;
+        frame_clip_die[i].y =0;
+        frame_clip_die[i].w = enemy_frame_width_die;
+        frame_clip_die[i].h = enemy_frame_height_die;
+    }
 
 }
 void EnemyObject::Run( Graphics &graphics)
@@ -296,14 +252,14 @@ void EnemyObject::Hurt(Graphics& graphics)
 
 void EnemyObject::Die(Graphics &graphics)
 {
-
     dieRect.x = rect.x;
     dieRect.y = rect.y ;
-    if (timeSinceLastDie.count() >= 160)
+    if (timeSinceLastDie.count() >= 150)
     {
         frame_die ++;
         lastDie = currentTime;
     }
+
     if (status == walkRight && frame_die <=3)
     {
         SDL_Rect* currentClip = &frame_clip_die[frame_die];

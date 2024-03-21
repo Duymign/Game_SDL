@@ -54,6 +54,21 @@ struct Game
             }
         }
     }
+    void doMenuAfterGame(bool &quit, Menu& menu, Graphics& graphics)
+    {
+        menu.menuAfterGame(graphics);
+        graphics.PresentScr();
+        quitMenu = false;
+        restartGame(graphics);
+        while(!quitMenu)
+        {
+            while(SDL_PollEvent(&event) != 0)
+            {
+                menu.handleOptionAfterGame(event, quitMenu, quit, graphics);
+                graphics.PresentScr();
+            }
+        }
+    }
     void InitEnemy(Graphics& graphics)
     {
         EnemyObject* enemy = new EnemyObject();
@@ -109,10 +124,6 @@ struct Game
     graphics.RenderBackground(background);
     game_map.loadMap();
     game_map.loadMapTiles(graphics);
-    //game_map.renderMap(graphics);
-    //graphics.RenderObject(character.getTexture(), character.getRect());
-
-    //graphics.PresentScr();
     }
     void Init(Graphics& graphics)
     {
@@ -182,7 +193,7 @@ struct Game
         character.attack(graphics);
         character.skill(graphics, mapdata);
         character.renderPlayerNotMove(graphics);
-        if (mainRect.y > SCREEN_HEIGHT) quit = true;
+
     }
     }
     void HandleBossRun(Graphics& graphics)
@@ -503,6 +514,21 @@ void checkColision2(Graphics &graphics) //Player Attack Boss
                 graphics.hpRect.w = 190.0 *(float)character.getHp()/Main_Max_Hp;
             }
         }
+    }
+    void restartGame(Graphics& graphics)
+    {
+        list_of_enemy.erase(list_of_enemy.begin(), list_of_enemy.end());
+        enemy_num = 0;
+        enemy_x_pos = 23*TILE_SIZE;
+
+        is_init_boss = false;
+        mapdata.tile[5][82] = 0;
+        mapdata.tile[6][82] = 0;
+        character.reset();
+        boss.reset();
+        game_map.setMap(mapdata);
+
+        graphics.hpRect.w = 190.0 *(float)character.getHp()/Main_Max_Hp;
     }
 };
 
