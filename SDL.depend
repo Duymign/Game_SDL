@@ -1295,16 +1295,18 @@
 1710927064 d:\gamesdl\menu.h
 	"BaseFunc.h"
 
-1710917158 source:d:\game_sdl\basefunc.cpp
+1711808172 source:d:\game_sdl\basefunc.cpp
 	"BaseFunc.h"
 
-1710925295 d:\game_sdl\basefunc.h
+1711879712 d:\game_sdl\basefunc.h
 	<Windows.h>
 	<iostream>
 	<string>
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_ttf.h>
+	<SDL_mixer.h>
+	<math.h>
 	<SDL_keyboard.h>
 	<vector>
 	<cstdlib>
@@ -1314,7 +1316,7 @@
 	<string>
 	"defs.h"
 
-1711007598 d:\game_sdl\defs.h
+1711809505 d:\game_sdl\defs.h
 
 1708526348 source:d:\game_sdl\baseobject.cpp
 	"BaseObject.h"
@@ -1322,10 +1324,10 @@
 1710822982 d:\game_sdl\baseobject.h
 	"BaseFunc.h"
 
-1711007050 source:d:\game_sdl\bossobject.cpp
+1711112560 source:d:\game_sdl\bossobject.cpp
 	"BossObject.h"
 
-1711003379 d:\game_sdl\bossobject.h
+1711102167 d:\game_sdl\bossobject.h
 	"BaseObject.h"
 	"BaseFunc.h"
 	"defs.h"
@@ -1337,26 +1339,26 @@
 	"BaseObject.h"
 	"defs.h"
 
-1711007050 source:d:\game_sdl\enemyobject.cpp
+1711693183 source:d:\game_sdl\enemyobject.cpp
 	"EnemyObject.h"
 
-1710604212 d:\game_sdl\enemyobject.h
+1711693183 d:\game_sdl\enemyobject.h
 	"BossObject.h"
 
 1709187641 source:d:\game_sdl\gamemap.cpp
 	"GameMap.h"
 
-1709102506 d:\game_sdl\gamemap.h
+1711810821 d:\game_sdl\gamemap.h
 	"BaseFunc.h"
 	"BaseObject.h"
 	"defs.h"
 
-1711007814 source:d:\game_sdl\main.cpp
+1711884699 source:d:\game_sdl\main.cpp
 	"logic.h"
 	"BaseFunc.h"
 	"Menu.h"
 
-1711004560 d:\game_sdl\logic.h
+1711884699 d:\game_sdl\logic.h
 	"BaseFunc.h"
 	"MainObject.h"
 	"GameMap.h"
@@ -1364,16 +1366,31 @@
 	"BossObject.h"
 	"EnemyObject.h"
 	"Menu.h"
+	"MiniMap.h"
 
-1711003379 d:\game_sdl\mainobject.h
+1711693183 d:\game_sdl\mainobject.h
 	"BaseObject.h"
 	"BulletObject.h"
 	"BaseFunc.h"
 	"defs.h"
 
-1710999940 d:\game_sdl\menu.h
+1711704910 d:\game_sdl\menu.h
 	"BaseFunc.h"
 
-1711007050 source:d:\game_sdl\mainobject.cpp
+1711883726 source:d:\game_sdl\mainobject.cpp
 	"MainObject.h"
+
+1705857752 d:\sdl_lib\sdl2_mixer-devel-2.8.0-mingw\sdl2_mixer-2.8.0\x86_64-w64-mingw32\include\sdl2\sdl_mixer.h
+	"SDL_stdinc.h"
+	"SDL_rwops.h"
+	"SDL_audio.h"
+	"SDL_endian.h"
+	"SDL_version.h"
+	"begin_code.h"
+	"close_code.h"
+
+1711886881 d:\game_sdl\minimap.h
+	"BaseFunc.h"
+	"defs.h"
+	"GameMap.h"
 

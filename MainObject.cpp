@@ -37,6 +37,7 @@ MainObject::MainObject()
     lastUseShoot = high_resolution_clock::now();
     lastDie = high_resolution_clock::now();
     currentTime = high_resolution_clock::now();
+
 }
 MainObject::~MainObject()
 {
@@ -160,7 +161,8 @@ void MainObject::Action(SDL_Event &event)
                 case SDLK_RIGHT:
                 case SDLK_d:status = walkRight;right_ = true;left_ = false;break;
 
-                case SDLK_SPACE:
+
+                case SDLK_w:
                 if (on_the_ground == true)
                 {
                     up_ = true;
@@ -172,7 +174,6 @@ void MainObject::Action(SDL_Event &event)
                         attack_ = true;
                         lastUseAttack = currentTime;
                     }
-
                     break;
                 case SDLK_k:
                     if(attack_ == false && skill_ == false && timeSinceLastUseShoot.count() >= timeSetShoot)
@@ -213,7 +214,7 @@ void MainObject::Action(SDL_Event &event)
                 break;
             }
         }
-    }
+}
 
 void MainObject::walk(const MAP& mapdata, Graphics &graphics)
 {
@@ -239,13 +240,13 @@ void MainObject::walk(const MAP& mapdata, Graphics &graphics)
             if(status == walkRight && right_ == true)
             {
                 x_pos += character_speed;
-                check_to_map(mapdata);
+                check_map_collision(mapdata);
                 rect.x = x_pos - map_x;
 
             }else if(status == walkLeft && left_ == true)
             {
                 x_pos -= character_speed;
-                check_to_map(mapdata);
+                check_map_collision(mapdata);
                 rect.x = x_pos - map_x;
             }
 
@@ -301,7 +302,7 @@ void MainObject::MoveInAir(const MAP& mapdata, Graphics &graphics)
         }else{
             is_on_the_ground();
         }
-        check_to_map(mapdata);
+        check_map_collision(mapdata);
     }
 }
 
@@ -321,6 +322,10 @@ void MainObject::Jump(Graphics &graphics)
                 up_ = false;
             }
             lastJump = currentTime;
+        if (frame_jump == 0)
+        {
+            graphics.playSound(gJump);
+        }
     }
     if (up_ == true && attack_ == false && skill_ == false && shoot_ == false)
     {
@@ -357,6 +362,10 @@ void MainObject::attack(Graphics &graphics)
                 frame_attack = -1;
                 attack_ = false;
             }
+            if (frame_attack == 0)
+            {
+                graphics.playSound(gAttack);
+            }
 
         }
         if (status == walkRight && attack_ == true)
@@ -390,6 +399,10 @@ void MainObject::shoot(Graphics &graphics)
                     frame_shoot = -1;
                     shoot_ = false;
                 }
+            if (frame_shoot == 0)
+            {
+                graphics.playSound(gShoot);
+            }
 
         }
         if (status == walkRight && shoot_ == true)
@@ -435,8 +448,11 @@ void MainObject::skill( Graphics &graphics, const MAP& mapdata)
                 rect.x = x_pos -map_x;
                 skillRect.x = rect.x;
             }
-            check_to_map(mapdata);
-
+            check_map_collision(mapdata);
+            if (frame_skill ==0)
+            {
+                graphics.playSound(gSkill);
+            }
         }
         if (status == walkRight && skill_ == true)
         {
@@ -475,7 +491,7 @@ void MainObject::renderPlayerNotMove(Graphics &graphics)
 // x1, y1     x2, y1
 
 // x1, y2     x2, y2
-void MainObject::check_to_map(const MAP &mapdata)
+void MainObject::check_map_collision(const MAP &mapdata)
 {
     int x1 = (x_pos) / TILE_SIZE;
     int x2 = (x_pos + Width_main_object -1)/ TILE_SIZE;
@@ -592,4 +608,12 @@ void MainObject::reset()
     hp = Main_Max_Hp;
     on_the_ground = false;
     up_ = false; down_ = false; left_ = false; right_ = false; attack_ = false; shoot_= false; skill_ = false;
+}
+void MainObject::loadSound(Graphics& graphics)
+{
+    gJump = graphics.loadSound("assets/jump.wav");
+    gAttack = graphics.loadSound("assets/attack.wav");
+    gSkill = graphics.loadSound("assets/skill.wav");
+    gShoot = graphics.loadSound("assets/shoot.mp3");
+    Mix_VolumeChunk(gSkill, MIX_MAX_VOLUME /3);
 }

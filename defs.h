@@ -79,4 +79,8 @@ const int enemy_frame_width_die = 1960/4;
 
 #define ENEMY_MAX_HP 60
 #define ENEMY_DAMGE 4
+
+//MiniMap
+#define MINI_MAP_RADIUS 80
+
 #endif // _DEFS_H

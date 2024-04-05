@@ -85,6 +85,10 @@ void BossObject::Attack(Graphics &graphics)
     {
         if ( timeSinceLastAttack.count() >= 200)
         {
+            if (frame_attack == 4)
+            {
+                graphics.playSound(gAttack);
+            }
             if (frame_attack < 6)
             {
                 frame_attack ++;
@@ -93,6 +97,7 @@ void BossObject::Attack(Graphics &graphics)
                 frame_attack = 0;
             }
             lastAttack = currentTime;
+
         }
         if (status == walkLeft)
         {
@@ -211,4 +216,9 @@ void BossObject::reset()
     frame_attack = 6;
     frame_run = -1;
     frame_die = -1;
+}
+void BossObject::loadSound(Graphics& graphics)
+{
+    gAttack = graphics.loadSound("assets/BossAttack.wav");
+    Mix_VolumeChunk(gAttack, MIX_MAX_VOLUME/8);
 }

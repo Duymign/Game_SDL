@@ -33,12 +33,12 @@ public:
     SDL_Rect getAttackRect(){return attackRect;}
     int getFrameAttack(){return frame_attack;}
     int getFrameDie(){return frame_die;}
-    void check_to_map(const MAP &mapdata);
+    void check_map_collision(const MAP &mapdata);
     void loseHp(const int &damge, Graphics& graphics);
     void Hurt(Graphics &graphics);
     void Die(Graphics &graphics);
     bool get_status_hurt(){return _hurt;}
-
+    void loadSound(Graphics& graphics);
 };
 
 #endif // EnemyObject_H

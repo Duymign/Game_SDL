@@ -11,7 +11,7 @@ int main(int argc, char* argv[])
     Menu menu(graphics);
     Game game;
     game.Init(graphics);
-
+    MiniMap miniMap(graphics);
     game.doMenu(quit, menu, graphics);
 
     while(!quit)
@@ -42,12 +42,13 @@ int main(int argc, char* argv[])
         if (game.is_init_boss == true)
             {
                 game.doBoss(graphics);
-                graphics.RenderBossHealthBar(game.bossRect, game.boss.getHp());
+                graphics.RenderBossHealthBar(game.bossRect, game.boss.getHp(), BOSS_MAX_HP);
                 game.checkColision1(graphics);//BossAttackPlayer
                 game.checkColision2(graphics);//PlayerAttackBoss
             }
             graphics.RenderHealthBar();
             game.doPlayer(quit, graphics);
+            miniMap.RenderMiniMap(game.mapdata, game.character.get_x_pos(), game.character.get_y_pos(), graphics);
             graphics.PresentScr();
             if (game.character.getFrameDie() == 4 || game.character.getRect().y > SCREEN_HEIGHT){
                 //MessageBox(NULL, "Game Over!", "Infor", MB_OK);

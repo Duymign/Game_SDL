@@ -7,7 +7,8 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
-
+#include <SDL_mixer.h>
+#include <math.h>
 #include <SDL_keyboard.h>
 #include <vector>
 #include <cstdlib>
@@ -17,8 +18,6 @@
 #include <string>
 #include "defs.h"
 using namespace std;
-
-
 
 struct Graphics
 {
@@ -46,13 +45,20 @@ struct Graphics
     void RenderBackground(SDL_Texture* background);
     void PresentScr();
     void RenderHealthBar();
-    void RenderBossHealthBar(const SDL_Rect &bossRect, const int &bossHp);
+    void RenderBossHealthBar(const SDL_Rect &bossRect, const int &bossHp, const int &MAX_HP);
     void Init();
     void ClearScr();
     void RenderSkill(const float &coolDownTimeSkill, const float &coolDownTimeAttack, const float &coolDownTimeShoot);
     TTF_Font* loadFont(const char* path, int size);
     SDL_Texture* createText(const char* text, TTF_Font* font, SDL_Color textColor);
-
+    Mix_Music *loadMusic(const char* path);
+    void playMusic(Mix_Music *gMusic);
+    Mix_Chunk* loadSound(const char* path);
+    void playSound(Mix_Chunk* gChunk);
+    void setColor(const SDL_Color &color);
+    void drawPoint(const int&x, const int& y){SDL_RenderDrawPoint(renderer, x, y); }
+    void drawRectangle(const SDL_Rect& rect){SDL_RenderFillRect(renderer, &rect);}
+    void drawLine(const float&x1, const float &y1, const float& x2, const float &y2){SDL_RenderDrawLine(renderer,x1,y1, x2, y2 );}
 };
 
     struct MAP

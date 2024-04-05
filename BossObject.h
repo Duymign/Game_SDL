@@ -48,6 +48,7 @@ protected:
 
     bool _run ;
     bool _attack;
+    Mix_Chunk *gAttack;
 
 public:
     BossObject();
@@ -94,6 +95,7 @@ public:
     bool get_status_attack(){return _attack;}
     void Die(Graphics &graphics);
     void reset();
+    void loadSound(Graphics &graphics);
 
 };
 

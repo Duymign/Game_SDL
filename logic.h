@@ -7,10 +7,12 @@
 #include "BossObject.h"
 #include "EnemyObject.h"
 #include "Menu.h"
+#include "MiniMap.h"
 using namespace std::chrono;
 
 struct Game
 {
+
     MainObject character;
     SDL_Texture* background;
     SDL_Texture* bull;
@@ -77,6 +79,7 @@ struct Game
         enemy->set_clip_run();
         enemy->set_clip_hurt();
         enemy->set_clip_die();
+        enemy->loadSound(graphics);
         enemy->setPos(enemy_x_pos , 6 * TILE_SIZE -Height_enemy_object, mapdata.start_x, mapdata.start_y);
         list_of_enemy.push_back(enemy);
         enemy_x_pos += 8.5 *TILE_SIZE;
@@ -88,6 +91,7 @@ struct Game
         boss.set_clip_run();
         boss.set_clip_attack();
         boss.set_clip_die();
+        boss.loadSound(graphics);
         //graphics.RenderObject(boss.get_texture_left)
     }
     void InitPlayer(Graphics &graphics){
@@ -102,6 +106,7 @@ struct Game
     character.set_clip_shoot();
     character.set_clip_skill();
     character.set_clip_die();
+    character.loadSound(graphics);
 
     bull = graphics.loadTexture("IMG/Phitieu.png");
     character.setImg(graphics);
@@ -199,13 +204,21 @@ struct Game
     void HandleBossRun(Graphics& graphics)
     {
         bossRect = boss.getRect();
-        if (character.get_x_pos() - boss.get_x_pos() >Width_main_object + bossAttackRect.w - Width_boss_object && character.get_x_pos() - boss.get_x_pos() <= SCREEN_WIDTH )
+        if (character.get_x_pos() - boss.get_x_pos() > 0 && boss.get_frame_attack() == 6)
+            {
+                boss.setStatus(walkRight); //Right
+            }else if (boss.get_frame_attack() == 6){
+                boss.setStatus(walkLeft);
+            }
+        if (character.get_x_pos() - boss.get_x_pos() >Width_main_object + bossAttackRect.w - Width_boss_object &&
+            character.get_x_pos() - boss.get_x_pos() <= SCREEN_WIDTH )
         {
             boss.change_status_attack(false);
             boss.change_status_run(true);
             boss.Run(graphics);
 
-        }else if (boss.get_x_pos() - character.get_x_pos() > bossAttackRect.w - Width_boss_object && boss.get_x_pos() - character.get_x_pos() <= SCREEN_WIDTH)
+        }else if (boss.get_x_pos() - character.get_x_pos() > bossAttackRect.w - Width_boss_object &&
+                  boss.get_x_pos() - character.get_x_pos() <= SCREEN_WIDTH)
         {
             boss.change_status_attack(false);
             boss.change_status_run(true);
@@ -220,7 +233,20 @@ struct Game
             boss.setPos(100 * TILE_SIZE, 8 * TILE_SIZE - Height_boss_object, mapdata.start_x, mapdata.start_y);
         }
     }
-
+    bool checkNearCharacter()
+    {
+        if (boss.get_x_pos() - character.get_x_pos() <= bossAttackRect.w - Width_boss_object && boss.get_x_pos() - character.get_x_pos() > 0)
+        {
+            //character ở bên trái boss
+            return true;
+        }else if (-boss.get_x_pos() + character.get_x_pos() <= Width_main_object + bossAttackRect.w - Width_boss_object &&
+             -boss.get_x_pos() + character.get_x_pos() >0)
+             {
+                 //character ở bên phải boss
+                 return true;
+             }
+        return false;
+    }
     void doBoss(Graphics &graphics)
     {
         boss.setToMap(mapdata.start_x, mapdata.start_y);
@@ -229,27 +255,37 @@ struct Game
         {
             boss.Die(graphics);
         }else{
-        if (character.get_x_pos() - boss.get_x_pos() > 0 && boss.get_frame_attack() == 6)
-        {
-            boss.setStatus(walkRight); //Right
 
-        }else if (boss.get_frame_attack() == 6){
-            boss.setStatus(walkLeft);
-        }
-        if (boss.get_frame_attack() == 6)
-        {
-            HandleBossRun(graphics);
-        }
-        if ((boss.get_x_pos() - character.get_x_pos() <= bossAttackRect.w - Width_boss_object && boss.get_x_pos() - character.get_x_pos() > 0) ||
-            (-boss.get_x_pos() + character.get_x_pos() <=Width_main_object + bossAttackRect.w - Width_boss_object && -boss.get_x_pos() + character.get_x_pos() >0))
-             {
-                 boss.change_status_attack(true);
-                 boss.change_status_run(false);
-             }
-        boss.Attack(graphics);
+            if (boss.get_frame_attack() == 6)
+            {
+                HandleBossRun(graphics);
+            }
+            if(checkNearCharacter() == true)
+            {
+                boss.change_status_attack(true);
+                boss.change_status_run(false);
+            }
+            boss.Attack(graphics);
         }
     }
+    void HandleEnemyStatus(EnemyObject* p_enemy)
+    {
+        if (p_enemy->get_status_hurt()== false)
+        {
+                if (p_enemy->get_x_pos() - character.get_x_pos() <= mainRect.w + p_enemy->getAttackRect().w - p_enemy->getRect().w &&
+                    p_enemy->get_x_pos() - character.get_x_pos()>= 0)
+                    {
+                        p_enemy->setStatus(walkLeft);
+                        p_enemy->change_status_attack(true);
 
+                }else if(-p_enemy->get_x_pos() + character.get_x_pos() <= mainRect.w/2 + p_enemy->getAttackRect().w - p_enemy->getRect().w &&
+                        -p_enemy->get_x_pos() + character.get_x_pos()>= 0)
+                {
+                    p_enemy->setStatus(walkRight);
+                    p_enemy->change_status_attack(true);
+                }
+        }
+    }
     void doEnemy(Graphics &graphics)
     {
         for (vector <EnemyObject*>::iterator it = list_of_enemy.begin(); it != list_of_enemy.end();)
@@ -270,20 +306,12 @@ struct Game
             {
                 p_enemy->setTime();
                 p_enemy->setToMap(mapdata.start_x, mapdata.start_y);
-                p_enemy->check_to_map(mapdata);
-                if (p_enemy->get_status_hurt()== false && p_enemy->get_x_pos() - character.get_x_pos() <= mainRect.w + p_enemy->getAttackRect().w - p_enemy->getRect().w && p_enemy->get_x_pos() - character.get_x_pos()>= 0)
-                {
-                        p_enemy->setStatus(walkLeft);
-                        p_enemy->change_status_attack(true);
-
-                }else if(p_enemy->get_status_hurt()== false && -p_enemy->get_x_pos() + character.get_x_pos() <= mainRect.w/2 + p_enemy->getAttackRect().w - p_enemy->getRect().w && -p_enemy->get_x_pos() + character.get_x_pos()>= 0)
-                {
-                    p_enemy->setStatus(walkRight);
-                    p_enemy->change_status_attack(true);
-                }
+                p_enemy->check_map_collision(mapdata);
+                HandleEnemyStatus(p_enemy);
                 p_enemy->Run(graphics);
                 p_enemy->Hurt(graphics);
                 p_enemy->Attack(graphics);
+                graphics.RenderBossHealthBar(p_enemy->getRect(), p_enemy->getHp(), ENEMY_MAX_HP);
                 it ++;
             }
         }

@@ -19,7 +19,6 @@ private:
     MAP game_map;
     TileMap tile_map[MAX_TILE];
     string filename;
-
 public:
     GameMap()
     {

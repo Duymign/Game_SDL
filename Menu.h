@@ -47,7 +47,7 @@ public:
         winGameRect.h = 100;
 
         color = {255, 0, 0, 255};
-        loseGame = graphics.createText("Looser!", font, color);
+        loseGame = graphics.createText("You Loose!", font, color);
         winGame = graphics.createText("You Win!", font, color);
         result = lose;
     }

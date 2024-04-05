@@ -146,7 +146,10 @@ void EnemyObject::Attack( Graphics &graphics)
                 frame_attack = -1;
                 _attack = false;
             }
-
+            if (frame_attack == 0)
+            {
+                graphics.playSound(gAttack);
+            }
         }
 
         if (status == walkLeft && _attack == true)
@@ -171,7 +174,7 @@ void EnemyObject::setTime()
     timeSinceLastHurt = duration_cast<milliseconds> (currentTime - lastHurt);
 }
 
-void EnemyObject::check_to_map(const MAP &mapdata)
+void EnemyObject::check_map_collision(const MAP &mapdata)
 {
     int x1 = (x_pos) / TILE_SIZE;
     int x2 = (x_pos + Width_enemy_object -1)/ TILE_SIZE;
@@ -266,7 +269,11 @@ void EnemyObject::Die(Graphics &graphics)
         graphics.RenderFrame(Die_Right, currentClip, dieRect);
     }else if (frame_die <= 3)
     {
-        SDL_Rect* currentClip = &frame_clip_die[4- frame_die];
+        SDL_Rect* currentClip = &frame_clip_die[3- frame_die];
         graphics.RenderFrame(Die_Left, currentClip, dieRect);
     }
+}
+void EnemyObject::loadSound(Graphics& graphics)
+{
+    gAttack = graphics.loadSound("assets/EnemyAttack.mp3");
 }

@@ -81,6 +81,11 @@ private:
     int frame_die;
 
     bool up_ = false, down_ = false, left_ = false, right_ = false, attack_ = false, shoot_= false, skill_ = false;
+    //Sound
+    Mix_Chunk* gJump;
+    Mix_Chunk* gAttack;
+    Mix_Chunk* gSkill;
+    Mix_Chunk* gShoot;
 
 public:
     MainObject();
@@ -154,7 +159,7 @@ public:
     vector <BulletObject*> get_list_bullet(){return bullets;}
     void shoot(Graphics &graphics);
     void skill( Graphics &graphics, const MAP& mapdata);
-    void check_to_map(const MAP &map_data);
+    void check_map_collision(const MAP &map_data);
     void centre_on_map(MAP &map_data);
     void is_on_the_ground()
     {
@@ -199,6 +204,7 @@ public:
     int get_attack_frame(){return frame_attack;}
     void die(Graphics &graphics);
     void reset();
+    void loadSound(Graphics& graphics);
 
 };
 #endif // _MainObject_H
