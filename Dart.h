@@ -4,7 +4,7 @@
 #include "BaseObject.h"
 #include "defs.h"
 
-class BulletObject : public BaseObject
+class Dart : public BaseObject
 {
 private:
 
@@ -12,8 +12,8 @@ private:
     int bullet_status;
 
 public:
-    BulletObject();
-    ~BulletObject();
+    Dart();
+    ~Dart();
     void setTexture(SDL_Texture* bull){object = bull;}
     void setStatus(const int& status)
     {

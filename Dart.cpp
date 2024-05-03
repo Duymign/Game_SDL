@@ -1,5 +1,5 @@
-#include "BulletObject.h"
-BulletObject ::BulletObject()
+#include "Dart.h"
+Dart ::Dart()
 {
     rect.x = 0;
     rect.y = 0;
@@ -8,11 +8,11 @@ BulletObject ::BulletObject()
 
 }
 
-BulletObject :: ~BulletObject()
+Dart :: ~Dart()
 {
 
 }
-void BulletObject::setRect(const int &x,const int &y)
+void Dart::setRect(const int &x,const int &y)
     {
         rect.x = x;
         rect.y = y;
@@ -20,7 +20,7 @@ void BulletObject::setRect(const int &x,const int &y)
         rect.w = Width_Bullet;
 
     }
-void BulletObject::MoveBullet(const int& x_border, const int &y_border)
+void Dart::MoveBullet(const int& x_border, const int &y_border)
 {
     if(bullet_status == Right_) // Walk Right
      {

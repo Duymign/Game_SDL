@@ -1,5 +1,5 @@
-#include "MainObject.h"
-MainObject::MainObject()
+#include "Player.h"
+Player::Player()
 {
     rect.x = 0;
     rect.y = 0;
@@ -39,11 +39,11 @@ MainObject::MainObject()
     currentTime = high_resolution_clock::now();
 
 }
-MainObject::~MainObject()
+Player::~Player()
 {
 ;
 }
-void MainObject::setTime()
+void Player::setTime()
 {
     currentTime = high_resolution_clock::now();
     timeSinceLastWalk = duration_cast<milliseconds> (currentTime - lastWalk);
@@ -57,7 +57,7 @@ void MainObject::setTime()
     timeSinceLastLoseHp = duration_cast<milliseconds> (currentTime - lastLoseHp);
     timeSinceLastDie = duration_cast<milliseconds> (currentTime - lastDie);
 }
-void MainObject::setImg(Graphics &graphics)
+void Player::setImg(Graphics &graphics)
 {
     runRight = graphics.loadTexture("IMG/Character_Run_Right.png");
     runLeft = graphics.loadTexture("IMG/Character_Run_Left.png");
@@ -77,7 +77,7 @@ void MainObject::setImg(Graphics &graphics)
     dieLeft = graphics.loadTexture("IMG/Character_Die_Left.png");
 
 }
-void MainObject::set_clip_shoot()
+void Player::set_clip_shoot()
 {
     if (frame_height_shoot > 0 && frame_width_shoot > 0)
     {
@@ -91,7 +91,7 @@ void MainObject::set_clip_shoot()
 
     }
 }
-void MainObject::setclip()
+void Player::setclip()
 {
     if (frame_width > 0 && frame_height > 0)
     {
@@ -104,7 +104,7 @@ void MainObject::setclip()
         }
     }
 }
-void MainObject::set_clip_jump()
+void Player::set_clip_jump()
 {
     if (frame_width_jump > 0 && frame_height_jump > 0)
     {
@@ -117,7 +117,7 @@ void MainObject::set_clip_jump()
         }
     }
 }
-void MainObject::set_clip_attack()
+void Player::set_clip_attack()
 {
     for (int i=0; i < 5; i++)
     {
@@ -128,7 +128,7 @@ void MainObject::set_clip_attack()
     }
 
 }
-void MainObject::set_clip_skill()
+void Player::set_clip_skill()
 {
     for (int i=0; i < 6; i++)
     {
@@ -139,7 +139,7 @@ void MainObject::set_clip_skill()
     }
 
 }
-void MainObject::set_clip_die()
+void Player::set_clip_die()
 {
     for (int i=0; i < 5; i++)
     {
@@ -149,7 +149,7 @@ void MainObject::set_clip_die()
         frame_clip_die[i].h = frame_height_die;
     }
 }
-void MainObject::Action(SDL_Event &event)
+void Player::Action(SDL_Event &event)
 {
         if (event.type == SDL_KEYDOWN)
         {
@@ -180,11 +180,11 @@ void MainObject::Action(SDL_Event &event)
                     {
                         if (frame_shoot == -1)
                         {
-                            BulletObject* newBullet = new BulletObject() ;
+                            Dart* newBullet = new Dart() ;
                             newBullet->setRect(rect.x + Width_main_object/2, rect.y + Height_main_Object/2 - 20);
                             newBullet->setmove(true);
                             newBullet->setStatus(status);
-                            bullets.push_back(newBullet);
+                            darts.push_back(newBullet);
                             shoot_ = true;
                         }
                         lastUseShoot = currentTime;
@@ -216,7 +216,7 @@ void MainObject::Action(SDL_Event &event)
         }
 }
 
-void MainObject::walk(const MAP& mapdata, Graphics &graphics)
+void Player::walk(const MAP& mapdata, Graphics &graphics)
 {
     SDL_Rect* currentclip;
     if (on_the_ground == true && shoot_ ==false && attack_ == false && skill_ == false)
@@ -265,7 +265,7 @@ void MainObject::walk(const MAP& mapdata, Graphics &graphics)
         }
     }
 }
-void MainObject::MoveInAir(const MAP& mapdata, Graphics &graphics)
+void Player::MoveInAir(const MAP& mapdata, Graphics &graphics)
 {
     if (on_the_ground == false)
         {
@@ -306,7 +306,7 @@ void MainObject::MoveInAir(const MAP& mapdata, Graphics &graphics)
     }
 }
 
-void MainObject::Jump(Graphics &graphics)
+void Player::Jump(Graphics &graphics)
 {
     if (up_ && timeSinceLastJump.count() >= 30)
     {
@@ -342,7 +342,7 @@ void MainObject::Jump(Graphics &graphics)
 
 }
 
-void MainObject::attack(Graphics &graphics)
+void Player::attack(Graphics &graphics)
 {
     rectAttack.h =rect.h * 1.3;
     rectAttack.w = rect.w * 1.3;
@@ -383,7 +383,7 @@ void MainObject::attack(Graphics &graphics)
 
     }
 }
-void MainObject::shoot(Graphics &graphics)
+void Player::shoot(Graphics &graphics)
 {
     SDL_Rect* currentclip;
     if(shoot_ == true)
@@ -417,7 +417,7 @@ void MainObject::shoot(Graphics &graphics)
     }
 
 }
-void MainObject::skill( Graphics &graphics, const MAP& mapdata)
+void Player::skill( Graphics &graphics, const MAP& mapdata)
 {
     skillRect.x = rect.x;
     skillRect.y = rect.y;
@@ -464,7 +464,7 @@ void MainObject::skill( Graphics &graphics, const MAP& mapdata)
         }
     }
 }
-void MainObject::renderPlayerNotMove(Graphics &graphics)
+void Player::renderPlayerNotMove(Graphics &graphics)
 {
     if (left_ == false && right_ == false && shoot_ == false && attack_ == false && up_ == false && skill_ ==false)
         {
@@ -491,7 +491,7 @@ void MainObject::renderPlayerNotMove(Graphics &graphics)
 // x1, y1     x2, y1
 
 // x1, y2     x2, y2
-void MainObject::check_map_collision(const MAP &mapdata)
+void Player::check_map_collision(const MAP &mapdata)
 {
     int x1 = (x_pos) / TILE_SIZE;
     int x2 = (x_pos + Width_main_object -1)/ TILE_SIZE;
@@ -533,7 +533,7 @@ void MainObject::check_map_collision(const MAP &mapdata)
         rect.y = y_pos - map_y;
     }
 }
-void MainObject::centre_on_map(MAP& map_data)
+void Player::centre_on_map(MAP& map_data)
 {
     map_data.start_x = x_pos - (SCREEN_WIDTH /2);
     if (map_data.start_x < 0)
@@ -552,7 +552,7 @@ void MainObject::centre_on_map(MAP& map_data)
         map_data.start_y = (map_data.max_y + 1) * TILE_SIZE- SCREEN_HEIGHT;
     }
 }
-void MainObject::loseHp(const int &damage)
+void Player::loseHp(const int &damage)
 {
     if (damage == BOSS_DAMAGE && timeSinceLastLoseHp.count() >= 1400)
     {
@@ -566,7 +566,7 @@ void MainObject::loseHp(const int &damage)
         lastLoseHp = currentTime;
     }
 }
-void MainObject::die(Graphics &graphics)
+void Player::die(Graphics &graphics)
 {
     dieRect.x = rect.x;
     dieRect.y = rect.y;
@@ -585,7 +585,7 @@ void MainObject::die(Graphics &graphics)
     }
 
 }
-void MainObject::reset()
+void Player::reset()
 {
     rect.x = 100;
     rect.y = 70;
@@ -609,7 +609,7 @@ void MainObject::reset()
     on_the_ground = false;
     up_ = false; down_ = false; left_ = false; right_ = false; attack_ = false; shoot_= false; skill_ = false;
 }
-void MainObject::loadSound(Graphics& graphics)
+void Player::loadSound(Graphics& graphics)
 {
     gJump = graphics.loadSound("assets/jump.wav");
     gAttack = graphics.loadSound("assets/attack.wav");

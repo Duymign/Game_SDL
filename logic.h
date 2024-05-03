@@ -1,11 +1,11 @@
 #ifndef _LOGIC__H
 #define _LOGIC__H
-#include "BaseFunc.h"
-#include "MainObject.h"
+#include "Graphics.h"
+#include "Player.h"
 #include "GameMap.h"
 #include "defs.h"
-#include "BossObject.h"
-#include "EnemyObject.h"
+#include "Boss.h"
+#include "Enemy.h"
 #include "Menu.h"
 #include "MiniMap.h"
 using namespace std::chrono;
@@ -13,26 +13,27 @@ using namespace std::chrono;
 struct Game
 {
 
-    MainObject character;
+    Player character;
     SDL_Texture* background;
     SDL_Texture* bull;
     SDL_Rect attackRect;
     SDL_Rect mainRect;
 
-    BulletObject bullet;
+    Dart bullet;
     GameMap game_map;
     MAP mapdata ;
     SDL_Event event;
     bool quitMenu;
 
-    BossObject boss;
+    Boss boss;
     SDL_Rect bossRect;
     bool is_init_boss = false;
     SDL_Rect bossAttackRect;
 
-    vector <EnemyObject *> list_of_enemy;
-    float enemy_x_pos = 23*TILE_SIZE;
-    int enemy_num = 0;
+    vector <Enemy *> list_of_enemy;
+    float enemy_x_pos;
+    int enemy_max_num =6;
+    int enemy_num =0;
 
     enum walkType{
         walkRight = 0,
@@ -40,7 +41,9 @@ struct Game
     };
     Game()
     {
-
+        enemy_num =0;
+        enemy_max_num = 6;
+        enemy_x_pos = 23*TILE_SIZE;
     }
     void doMenu(bool &quit, Menu& menu, Graphics& graphics)
     {
@@ -61,7 +64,7 @@ struct Game
         menu.menuAfterGame(graphics);
         graphics.PresentScr();
         quitMenu = false;
-        restartGame(graphics);
+
         while(!quitMenu)
         {
             while(SDL_PollEvent(&event) != 0)
@@ -70,10 +73,16 @@ struct Game
                 graphics.PresentScr();
             }
         }
+        if (menu.getOption() == Menu::restart) // Restart
+            {
+                enemy_max_num =6;
+                enemy_num =0;
+                restartGame(graphics);
+            }
     }
     void InitEnemy(Graphics& graphics)
     {
-        EnemyObject* enemy = new EnemyObject();
+        Enemy* enemy = new Enemy();
         enemy->setImg(graphics);
         enemy->set_clip_attack();
         enemy->set_clip_run();
@@ -83,7 +92,7 @@ struct Game
         enemy->setPos(enemy_x_pos , 6 * TILE_SIZE -Height_enemy_object, mapdata.start_x, mapdata.start_y);
         list_of_enemy.push_back(enemy);
         enemy_x_pos += 8.5 *TILE_SIZE;
-        enemy_num ++;
+        enemy_num++;
     }
     void InitBoss(Graphics &graphics)
     {
@@ -140,37 +149,37 @@ struct Game
         mapdata.start_y = 0;
     }
 
-    void handleBullet(Graphics &graphics)
+    void handleDart(Graphics &graphics)
     {
-        vector <BulletObject*> list_of_bullets = character.get_list_bullet();
-        vector <SDL_Rect> bulletRects;
+        vector <Dart*> list_of_darts = character.get_list_bullet();
+        vector <SDL_Rect> dartRects;
         //ĐẠN
-        for(vector <BulletObject*>::iterator it = list_of_bullets.begin(); it != list_of_bullets.end();)
+        for(vector <Dart*>::iterator it = list_of_darts.begin(); it != list_of_darts.end();)
         {
-            BulletObject *p_bullet = *it;
-            if(p_bullet!= NULL )
+            Dart *p_dart = *it;
+            if(p_dart!= NULL )
             {
-            if (p_bullet->isMoving()){
-                    p_bullet->MoveBullet(SCREEN_WIDTH, SCREEN_HEIGHT);
-                    SDL_Rect bulletRect = p_bullet->getRect();
-                    bulletRects.push_back(bulletRect);
+            if (p_dart->isMoving()){
+                    p_dart->MoveBullet(SCREEN_WIDTH, SCREEN_HEIGHT);
+                    SDL_Rect dartRect = p_dart->getRect();
+                    dartRects.push_back(dartRect);
                     ++it;
             }else{
-                it =list_of_bullets.erase(it);
+                it =list_of_darts.erase(it);
             }
         }
         }
-        for (long long unsigned i=0; i < bulletRects.size(); i++)
+        for (long long unsigned i=0; i < dartRects.size(); i++)
         {
             //vẽ đạn
-            graphics.RenderObject(bull, bulletRects[i]);
+            graphics.RenderObject(bull, dartRects[i]);
         }
-        checkColision3(graphics, list_of_bullets);
-        checkColision4(graphics, list_of_bullets);
-        bulletRects.clear();
+        checkColision3(graphics, list_of_darts);
+        checkColision4(graphics, list_of_darts);
+        dartRects.clear();
     }
 
-    void doPlayer(bool &quit, Graphics &graphics)
+    void doPlayer(bool &quit, Graphics &graphics, Menu& menu)
     {
         character.setTime();
         character.setMapXY(mapdata.start_x, mapdata.start_y);
@@ -185,15 +194,25 @@ struct Game
             if(event.type == SDL_QUIT)
             {
                 quit = true;
+                saveGame(menu);
             }else
             {
+                if (event.type == SDL_KEYDOWN)
+                {
+                    if (event.key.keysym.sym == SDLK_p)
+                    {
+                        menu.setResult(2);
+                        saveGame(menu);
+                        doMenuAfterGame(quit, menu, graphics);
+                    }
+                }
                 character.Action(event);
             }
         }
         character.Jump(graphics);
         character.walk(mapdata, graphics);
         character.MoveInAir(mapdata, graphics);
-        handleBullet(graphics);
+        handleDart(graphics);
         character.shoot(graphics);
         character.attack(graphics);
         character.skill(graphics, mapdata);
@@ -268,7 +287,7 @@ struct Game
             boss.Attack(graphics);
         }
     }
-    void HandleEnemyStatus(EnemyObject* p_enemy)
+    void HandleEnemyStatus(Enemy* p_enemy)
     {
         if (p_enemy->get_status_hurt()== false)
         {
@@ -288,9 +307,9 @@ struct Game
     }
     void doEnemy(Graphics &graphics)
     {
-        for (vector <EnemyObject*>::iterator it = list_of_enemy.begin(); it != list_of_enemy.end();)
+        for (vector <Enemy*>::iterator it = list_of_enemy.begin(); it != list_of_enemy.end();)
         {
-            EnemyObject* p_enemy = *it;
+            Enemy* p_enemy = *it;
             if (p_enemy->getHp() <= 0){
                 if (p_enemy->getFrameDie() <= 3)
                 {
@@ -400,44 +419,44 @@ void checkColision2(Graphics &graphics) //Player Attack Boss
             }
     }
 }
-    void checkColision3(Graphics &graphics, vector <BulletObject*> &list_of_bullets)// Player shoot boss
+    void checkColision3(Graphics &graphics, vector <Dart*> &list_of_darts)// Player shoot boss
     {
         bossRect = boss.getRect();
-        for (vector <BulletObject*>::iterator it = list_of_bullets.begin(); it != list_of_bullets.end(); it++)
+        for (vector <Dart*>::iterator it = list_of_darts.begin(); it != list_of_darts.end(); it++)
         {
             bool col3 = false;
-            BulletObject* p_bullet = *it;
-            SDL_Rect bulletRect = p_bullet->getRect();
-            if(bulletRect.y + bulletRect.h < bossRect.y)
+            Dart* p_dart = *it;
+            SDL_Rect dartRect = p_dart->getRect();
+            if(dartRect.y + dartRect.h < bossRect.y)
             {
                 col3 = false;
-            }else if (bulletRect.y > bossRect.y + bossRect.h )
+            }else if (dartRect.y > bossRect.y + bossRect.h )
             {
                 col3 = false;
-            }else if (bulletRect.x +bulletRect.w < bossRect.x + bossRect.w /3)
+            }else if (dartRect.x +dartRect.w < bossRect.x + bossRect.w /3)
             {
                 col3 = false;
-            }else if (bulletRect.x > bossRect.x + bossRect.w - bossRect.w /3)
+            }else if (dartRect.x > bossRect.x + bossRect.w - bossRect.w /3)
             {
                 col3 = false;
             }else {col3 = true;}
             if (col3 == true)
             {
-                p_bullet ->setmove(false);
+                p_dart ->setmove(false);
                 boss.loseHp(SHOOT_DAMGE);
             }
         }
     }
-    void checkColision4(Graphics &graphics, vector <BulletObject*> &list_of_bullets) // Player shoot enemy
+    void checkColision4(Graphics &graphics, vector <Dart*> &list_of_darts) // Player shoot enemy
     {
-        for (vector <EnemyObject*>::iterator it_enemy = list_of_enemy.begin(); it_enemy != list_of_enemy.end(); it_enemy ++)
+        for (vector <Enemy*>::iterator it_enemy = list_of_enemy.begin(); it_enemy != list_of_enemy.end(); it_enemy ++)
         {
-            EnemyObject *p_enemy = *it_enemy;
-            for (vector <BulletObject* >::iterator it_bullet= list_of_bullets.begin(); it_bullet != list_of_bullets.end(); it_bullet++)
+            Enemy *p_enemy = *it_enemy;
+            for (vector <Dart* >::iterator it_dart= list_of_darts.begin(); it_dart != list_of_darts.end(); it_dart++)
             {
                 bool col4 = false;
-                BulletObject* p_bullet = *it_bullet;
-                SDL_Rect bulletRect = p_bullet->getRect();
+                Dart* p_dart = *it_dart;
+                SDL_Rect bulletRect = p_dart->getRect();
 
                 if (bulletRect.y + bulletRect.h < p_enemy->getRect().y){col4 = false;}
                 else if (bulletRect.y > p_enemy->getRect().y + p_enemy->getRect().h) {col4 = false;}
@@ -448,8 +467,7 @@ void checkColision2(Graphics &graphics) //Player Attack Boss
                 if (col4 == true)
                 {
                     p_enemy->loseHp(SHOOT_DAMGE, graphics);
-                    p_bullet->setmove(false);
-
+                    p_dart->setmove(false);
                 }
             }
         }
@@ -458,9 +476,9 @@ void checkColision2(Graphics &graphics) //Player Attack Boss
     {
         attackRect = character.get_attack_rect();
         mainRect = character.getRect();
-        for (vector <EnemyObject *>::iterator it_enemy = list_of_enemy.begin(); it_enemy != list_of_enemy.end(); it_enemy ++)
+        for (vector <Enemy *>::iterator it_enemy = list_of_enemy.begin(); it_enemy != list_of_enemy.end(); it_enemy ++)
         {
-            EnemyObject *p_enemy = *it_enemy;
+            Enemy *p_enemy = *it_enemy;
             if (character.get_status_attack() == true)
             {
                 bool col5 = false;
@@ -501,9 +519,9 @@ void checkColision2(Graphics &graphics) //Player Attack Boss
     }
     void checkColision6(Graphics &graphics)//Enemy attack player
     {
-    for (vector <EnemyObject *>::iterator it_enemy = list_of_enemy.begin(); it_enemy != list_of_enemy.end(); it_enemy ++)
+    for (vector <Enemy *>::iterator it_enemy = list_of_enemy.begin(); it_enemy != list_of_enemy.end(); it_enemy ++)
     {
-        EnemyObject *p_enemy = *it_enemy;
+        Enemy *p_enemy = *it_enemy;
         bool col6 = false; // Enemy attack player
         if (p_enemy->get_status_attack() == true && p_enemy->getStatus() == walkRight && p_enemy->getFrameAttack() >= 1) //Right
         {
@@ -546,7 +564,8 @@ void checkColision2(Graphics &graphics) //Player Attack Boss
     void restartGame(Graphics& graphics)
     {
         list_of_enemy.erase(list_of_enemy.begin(), list_of_enemy.end());
-        enemy_num = 0;
+        enemy_max_num = 6;
+        enemy_num =0;
         enemy_x_pos = 23*TILE_SIZE;
 
         is_init_boss = false;
@@ -557,6 +576,97 @@ void checkColision2(Graphics &graphics) //Player Attack Boss
         game_map.setMap(mapdata);
 
         graphics.hpRect.w = 190.0 *(float)character.getHp()/Main_Max_Hp;
+    }
+    void saveGame(Menu& menu)
+    {
+        cout << character.get_x_pos() << endl;
+        ofstream fileMain("main.txt");
+        fileMain << menu.getResult() << " ";
+        fileMain << character.get_x_pos() << " " << character.get_y_pos() << " ";
+        fileMain << mapdata.start_x <<" " << mapdata.start_y << " ";
+        fileMain << character.getHp() << " ";
+        fileMain.close();
+
+        ofstream fileEnemy("enemy.txt");
+
+        fileEnemy << (int)list_of_enemy.size() << " ";
+        for (vector <Enemy *>::iterator it_enemy = list_of_enemy.begin(); it_enemy != list_of_enemy.end(); it_enemy ++)
+        {
+            Enemy* p_enemy = *it_enemy;
+            fileEnemy << p_enemy->get_x_pos() << " " << p_enemy->get_y_pos() << " "
+            << p_enemy->getHp() << " ";
+        }
+        fileEnemy.close();
+
+        ofstream fileBoss("boss.txt");
+        fileBoss << boss.get_x_pos() << " " << boss.get_y_pos() << " " << boss.getHp() << " ";
+
+        fileBoss.close();
+
+    }
+    void resumeEnemy(Graphics &graphics)
+    {
+        ifstream fileEnemy("enemy.txt");
+
+        fileEnemy >> enemy_max_num;
+
+        for (int i=0; i < enemy_max_num; i++)
+        {
+            InitEnemy(graphics);
+        }
+        for (vector <Enemy *>::iterator it_enemy = list_of_enemy.begin(); it_enemy != list_of_enemy.end(); it_enemy ++)
+        {
+            Enemy* p_enemy = *it_enemy;
+            float x_pos, y_pos;
+            int hp;
+            fileEnemy >> x_pos >> y_pos >> hp;
+            p_enemy->setPos(x_pos, y_pos, mapdata.start_x, mapdata.start_y);
+            p_enemy->setHp(hp);
+        }
+        fileEnemy.close();
+    }
+    void resumeBoss()
+    {
+        ifstream fileBoss("boss.txt");
+        float x_pos, y_pos;
+        int hp;
+        fileBoss >> x_pos >> y_pos >> hp;
+        boss.setPos(x_pos, y_pos, mapdata.start_x, mapdata.start_y);
+        boss.setHp(hp);
+        fileBoss.close();
+    }
+    void continueGame(bool &quit, Menu &menu, Graphics &graphics)
+    {
+        float x_pos, y_pos;
+        int result, hp;
+        ifstream fileMain("main.txt");
+        fileMain >> result;
+        cout << result << " ";
+
+        //fileMain.seekg(1, ios_base::cur);
+        if (result == Menu::pause)
+        {
+            menu.setResult(Menu::pause);
+            fileMain >> x_pos >> y_pos;
+            character.setPos(x_pos, y_pos);
+            fileMain>>mapdata.start_x >> mapdata.start_y >> hp ;
+            character.setMapXY(mapdata.start_x, mapdata.start_y);
+            character.setRect(x_pos - mapdata.start_x, y_pos);
+            character.setHp(hp);
+            graphics.hpRect.w = 190.0 *(float)character.getHp()/Main_Max_Hp;
+            character.centre_on_map(mapdata);
+
+            doMenuAfterGame(quit, menu, graphics);
+            if (menu.getOption() == Menu::Continue)
+            {
+                resumeEnemy(graphics);
+                resumeBoss();
+            }
+        }else
+        {
+            doMenu(quit, menu, graphics);
+        }
+        fileMain.close();
     }
 };
 

@@ -1,6 +1,6 @@
 #ifndef BaseObject_H
 #define BaseObject_H
-#include "BaseFunc.h"
+#include "graphics.h"
 
 class BaseObject {
 protected:

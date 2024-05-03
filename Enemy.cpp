@@ -1,5 +1,5 @@
-#include "EnemyObject.h"
-EnemyObject::EnemyObject()
+#include "Enemy.h"
+Enemy::Enemy()
 {
     rect.x =0;
     rect.y = 0;
@@ -31,11 +31,11 @@ EnemyObject::EnemyObject()
     currentTime = high_resolution_clock::now();
     hp = ENEMY_MAX_HP;
 }
-EnemyObject::~EnemyObject()
+Enemy::~Enemy()
 {
     ;
 }
-void EnemyObject::setImg(Graphics &graphics)
+void Enemy::setImg(Graphics &graphics)
 {
     Run_Left = graphics.loadTexture ("ENEMY_IMG/Enemy_Walk_Left.png");
     Run_Right = graphics.loadTexture("ENEMY_IMG/Enemy_Walk_Right.png");
@@ -46,7 +46,7 @@ void EnemyObject::setImg(Graphics &graphics)
     Die_Right = graphics.loadTexture("ENEMY_IMG/Enemy_Die_Right.png");
     Die_Left = graphics.loadTexture("ENEMY_IMG/Enemy_Die_Left.png");
 }
-void EnemyObject::set_clip_run()
+void Enemy::set_clip_run()
 {
     for (int i=0; i < 6; i++)
     {
@@ -57,7 +57,7 @@ void EnemyObject::set_clip_run()
     }
 
 }
-void EnemyObject::set_clip_attack()
+void Enemy::set_clip_attack()
 {
     for (int i=0; i < 4; i++)
     {
@@ -68,7 +68,7 @@ void EnemyObject::set_clip_attack()
     }
 
 }
-void EnemyObject::set_clip_hurt()
+void Enemy::set_clip_hurt()
 {
     for (int i=0; i < 2; i++)
     {
@@ -80,7 +80,7 @@ void EnemyObject::set_clip_hurt()
 
 
 }
-void EnemyObject::set_clip_die()
+void Enemy::set_clip_die()
 {
     for (int i=0; i < 4; i++)
     {
@@ -91,7 +91,7 @@ void EnemyObject::set_clip_die()
     }
 
 }
-void EnemyObject::Run( Graphics &graphics)
+void Enemy::Run( Graphics &graphics)
 {
     if (_attack == false && _hurt == false){
         if (timeSinceLastRun.count() >= 150)
@@ -131,7 +131,7 @@ void EnemyObject::Run( Graphics &graphics)
     }
 
 }
-void EnemyObject::Attack( Graphics &graphics)
+void Enemy::Attack( Graphics &graphics)
 {
     if (_attack == true && _hurt == false)
     {
@@ -168,13 +168,13 @@ void EnemyObject::Attack( Graphics &graphics)
         }
     }
 }
-void EnemyObject::setTime()
+void Enemy::setTime()
 {
-    BossObject::setTime();
+    Boss::setTime();
     timeSinceLastHurt = duration_cast<milliseconds> (currentTime - lastHurt);
 }
 
-void EnemyObject::check_map_collision(const MAP &mapdata)
+void Enemy::check_map_collision(const MAP &mapdata)
 {
     int x1 = (x_pos) / TILE_SIZE;
     int x2 = (x_pos + Width_enemy_object -1)/ TILE_SIZE;
@@ -214,7 +214,7 @@ void EnemyObject::check_map_collision(const MAP &mapdata)
             }
     }
 }
-void EnemyObject::loseHp(const int &damge, Graphics& graphics)
+void Enemy::loseHp(const int &damge, Graphics& graphics)
 {
 
     if (timeSinceLastLoseHp.count() >= 300 || damge == SHOOT_DAMGE)
@@ -224,7 +224,7 @@ void EnemyObject::loseHp(const int &damge, Graphics& graphics)
         _hurt = true;
     }
 }
-void EnemyObject::Hurt(Graphics& graphics)
+void Enemy::Hurt(Graphics& graphics)
 {
     if (_hurt == true)
     {
@@ -253,7 +253,7 @@ void EnemyObject::Hurt(Graphics& graphics)
     }
 }
 
-void EnemyObject::Die(Graphics &graphics)
+void Enemy::Die(Graphics &graphics)
 {
     dieRect.x = rect.x;
     dieRect.y = rect.y ;
@@ -273,7 +273,7 @@ void EnemyObject::Die(Graphics &graphics)
         graphics.RenderFrame(Die_Left, currentClip, dieRect);
     }
 }
-void EnemyObject::loadSound(Graphics& graphics)
+void Enemy::loadSound(Graphics& graphics)
 {
     gAttack = graphics.loadSound("assets/EnemyAttack.mp3");
 }

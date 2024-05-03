@@ -1,7 +1,7 @@
 #ifndef MENU_H
 #define MENU_H
 
-#include "BaseFunc.h"
+#include "Graphics.h"
 
 class Menu{
 private:
@@ -13,13 +13,17 @@ private:
     SDL_Texture* option;
     SDL_Texture* loseGame;
     SDL_Texture* winGame;
+    SDL_Texture* continueGame;
     SDL_Texture* playAgain;
 
     SDL_Rect newGameRect;
     SDL_Rect exitRect;
     SDL_Rect textRect;
-    SDL_Rect winGameRect;
+    SDL_Rect resultRect;
+    SDL_Rect continueRect;
+
     int result;
+    int optionResult;
 
 public:
     Menu(Graphics &graphics)
@@ -29,32 +33,42 @@ public:
         newGame = graphics.createText("New Game", font, color);
         exit = graphics.createText("Exit", font, color);
         playAgain = graphics.createText("Play Again !", font, color);
+        continueGame = graphics.createText("Continue", font, color);
         menuBackGround = graphics.loadTexture("IMG/Menu.png");
         option = graphics.loadTexture("IMG/Option.png");
+
         newGameRect.x = SCREEN_WIDTH/2 - 150;
         newGameRect.y = SCREEN_HEIGHT/2 ;
         newGameRect.w = 300;
         newGameRect.h = 50;
+
+        continueRect.x = newGameRect.x;
+        continueRect.y = newGameRect.y - 100;
+        continueRect.w = newGameRect.w;
+        continueRect.h = newGameRect.h;
 
         exitRect.x = newGameRect.x;
         exitRect.y = newGameRect.y + 100;
         exitRect.w = newGameRect.w ;
         exitRect.h = newGameRect.h;
 
-        winGameRect.x = SCREEN_WIDTH/2 - 130;
-        winGameRect.y = SCREEN_HEIGHT/2 - 120;
-        winGameRect.w = 260;
-        winGameRect.h = 100;
+        resultRect.x = SCREEN_WIDTH/2 - 130;
+        resultRect.y = SCREEN_HEIGHT/2 - 120;
+        resultRect.w = 260;
+        resultRect.h = 100;
 
         color = {255, 0, 0, 255};
         loseGame = graphics.createText("You Loose!", font, color);
         winGame = graphics.createText("You Win!", font, color);
-        result = lose;
+
+        result = pause;
+        optionResult =Continue;
     }
     ~Menu(){;}
     void RenderMenu(Graphics &graphics)
     {
         graphics.ClearScr();
+
         textRect.x = SCREEN_WIDTH/2 - 80;
         textRect.y = newGameRect.y + 10;
         textRect.w = 160;
@@ -70,11 +84,13 @@ public:
 
         graphics.RenderObject(option, exitRect);
         graphics.RenderObject(exit, textRect);
+
     }
     void handleOption(SDL_Event &event, bool &quitMenu, bool &quitGame, Graphics &graphics)
     {
         int x, y;
         SDL_GetMouseState(&x, &y);
+
         if (x >= newGameRect.x && x <= newGameRect.x + newGameRect.w && y >= newGameRect.y && y <= newGameRect.y + newGameRect.h)
         {
             color = {255, 0, 0, 255};
@@ -114,6 +130,7 @@ public:
         SDL_Delay(20);
     }
     enum resultType{
+        pause = 2,
         win = 1,
         lose = 0,
     };
@@ -137,17 +154,36 @@ public:
         graphics.RenderObject(exit, textRect);
         if (result == lose)
         {
-            graphics.RenderObject(loseGame, winGameRect);
+            graphics.RenderObject(loseGame, resultRect);
         }
         else if (result == win)
         {
-            graphics.RenderObject(winGame, winGameRect);
+            graphics.RenderObject(winGame, resultRect);
+        }else if (result == pause)
+        {
+                graphics.RenderObject(option, continueRect);
+                textRect.x = SCREEN_WIDTH/2 - 80;
+                textRect.y = continueRect.y + 10;
+                textRect.w = 160;
+                graphics.RenderObject(continueGame, textRect);
         }
     }
     void handleOptionAfterGame(SDL_Event &event, bool &quitMenu, bool &quitGame, Graphics &graphics)
     {
         int x, y;
         SDL_GetMouseState(&x, &y);
+        if (result == pause)
+        {
+            if (x >= continueRect.x && x <= continueRect.x + continueRect.w && y >= continueRect.y && y <= continueRect.y + continueRect.h)
+            {
+                color = {255, 0, 0, 255};
+                continueGame = graphics.createText("Continue", font, color);
+
+            }else{
+                color = {0, 0, 0, 255};
+                continueGame = graphics.createText("Continue", font, color);
+            }
+        }
         if (x >= newGameRect.x && x <= newGameRect.x + newGameRect.w && y >= newGameRect.y && y <= newGameRect.y + newGameRect.h)
         {
             color = {255, 0, 0, 255};
@@ -172,8 +208,15 @@ public:
         switch(event.type)
         {
             case SDL_MOUSEBUTTONDOWN:
-            if (x >= newGameRect.x && x <= newGameRect.x + newGameRect.w && y >= newGameRect.y && y <= newGameRect.y + newGameRect.h)
+            if (x >= continueRect.x && x <= continueRect.x + continueRect.w && y >= continueRect.y && y <= continueRect.y + continueRect.h && result == pause)
             {
+                optionResult = Continue;
+                quitGame = false;
+                quitMenu = true;
+            }
+            else if (x >= newGameRect.x && x <= newGameRect.x + newGameRect.w && y >= newGameRect.y && y <= newGameRect.y + newGameRect.h)
+            {
+                optionResult = restart;
                 quitGame = false;
                 quitMenu = true;
             }
@@ -193,6 +236,15 @@ public:
     {
         this->result = result;
     }
+    enum option_result
+    {
+        Continue = 0,
+        restart = 1,
+    };
 
+    int getOption()
+    {
+        return optionResult;
+    }
 };
 #endif // MENU_H

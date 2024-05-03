@@ -1,4 +1,4 @@
-#include "BaseFunc.h"
+#include "Graphics.h"
 
 void Graphics::logErrorAndExit(const char* msg, const char* error)
 {

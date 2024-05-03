@@ -1,5 +1,5 @@
-#include "BossObject.h"
-BossObject::BossObject()
+#include "Boss.h"
+Boss::Boss()
 {
     rect.x = 0;
     rect.y = 0;
@@ -27,7 +27,7 @@ BossObject::BossObject()
     lastDie = high_resolution_clock::now();
 }
 
-void BossObject ::setImg(Graphics &graphics)
+void Boss ::setImg(Graphics &graphics)
 {
     Boss_Right = graphics.loadTexture("BOSS_IMG/Boss_Right.png");
     Boss_Left = graphics.loadTexture("BOSS_IMG/Boss_Left.png");
@@ -39,7 +39,7 @@ void BossObject ::setImg(Graphics &graphics)
     Die_Left = graphics.loadTexture("BOSS_IMG/Boss_Die_Left.png");
 }
 
-void BossObject::set_clip_run()
+void Boss::set_clip_run()
 {
     if (boss_frame_width_run > 0 && boss_frame_height_run > 0)
     {
@@ -53,7 +53,7 @@ void BossObject::set_clip_run()
 
     }
 }
-void BossObject::set_clip_attack()
+void Boss::set_clip_attack()
 {
     if (boss_frame_width_attack > 0 && boss_frame_height_attack > 0)
     {
@@ -66,7 +66,7 @@ void BossObject::set_clip_attack()
         }
     }
 }
-void BossObject::set_clip_die()
+void Boss::set_clip_die()
 {
 
 for (int i=0; i < 6; i++)
@@ -79,7 +79,7 @@ for (int i=0; i < 6; i++)
 }
 
 }
-void BossObject::Attack(Graphics &graphics)
+void Boss::Attack(Graphics &graphics)
 {
     if (_attack == true)
     {
@@ -115,7 +115,7 @@ void BossObject::Attack(Graphics &graphics)
         }
     }
 }
-void BossObject::Run(Graphics &graphics)
+void Boss::Run(Graphics &graphics)
 {
         if (timeSinceLastRun.count() >= 200)
         {
@@ -147,7 +147,7 @@ void BossObject::Run(Graphics &graphics)
         }
 
 }
-void BossObject::setPos(const int &x, const int &y, const int& mapx, const int& mapy){
+void Boss::setPos(const float &x, const float &y, const float& mapx, const float& mapy){
     x_pos = x;
     y_pos = y;
     map_x = mapx;
@@ -156,7 +156,7 @@ void BossObject::setPos(const int &x, const int &y, const int& mapx, const int& 
     rect.y = y_pos - map_y;
 }
 
-void BossObject::renderIDLE(Graphics &graphics)
+void Boss::renderIDLE(Graphics &graphics)
 {
     if (status == walkLeft)
     {
@@ -165,7 +165,7 @@ void BossObject::renderIDLE(Graphics &graphics)
         graphics.RenderObject(Boss_Right, rect);
     }
 }
-void BossObject::setTime()
+void Boss::setTime()
 {
     currentTime = high_resolution_clock::now();
     timeSinceLastAttack = duration_cast<milliseconds> (currentTime - lastAttack);
@@ -173,7 +173,7 @@ void BossObject::setTime()
     timeSinceLastLoseHp = duration_cast<milliseconds> (currentTime - lastLoseHp);
     timeSinceLastDie = duration_cast<milliseconds> (currentTime - lastDie);
 }
-void BossObject::loseHp(const int &damge)
+void Boss::loseHp(const int &damge)
 {
     if (timeSinceLastLoseHp.count() >= 300 || damge == SHOOT_DAMGE)
     {
@@ -181,7 +181,7 @@ void BossObject::loseHp(const int &damge)
         lastLoseHp = currentTime;
     }
 }
-void BossObject::Die(Graphics& graphics)
+void Boss::Die(Graphics& graphics)
 {
     dieRect.x = rect.x;
     dieRect.y = rect.y + 30;
@@ -201,7 +201,7 @@ void BossObject::Die(Graphics& graphics)
     }
 }
 
-void BossObject::reset()
+void Boss::reset()
 {
     rect.x = 0;
     rect.y = 0;
@@ -217,7 +217,7 @@ void BossObject::reset()
     frame_run = -1;
     frame_die = -1;
 }
-void BossObject::loadSound(Graphics& graphics)
+void Boss::loadSound(Graphics& graphics)
 {
     gAttack = graphics.loadSound("assets/BossAttack.wav");
     Mix_VolumeChunk(gAttack, MIX_MAX_VOLUME/8);

@@ -1298,7 +1298,7 @@
 1711808172 source:d:\game_sdl\basefunc.cpp
 	"BaseFunc.h"
 
-1711879712 d:\game_sdl\basefunc.h
+1713518378 d:\game_sdl\basefunc.h
 	<Windows.h>
 	<iostream>
 	<string>
@@ -1321,13 +1321,13 @@
 1708526348 source:d:\game_sdl\baseobject.cpp
 	"BaseObject.h"
 
-1710822982 d:\game_sdl\baseobject.h
-	"BaseFunc.h"
+1714128256 d:\game_sdl\baseobject.h
+	"graphics.h"
 
-1711112560 source:d:\game_sdl\bossobject.cpp
+1713526108 source:d:\game_sdl\bossobject.cpp
 	"BossObject.h"
 
-1711102167 d:\game_sdl\bossobject.h
+1713526087 d:\game_sdl\bossobject.h
 	"BaseObject.h"
 	"BaseFunc.h"
 	"defs.h"
@@ -1339,45 +1339,45 @@
 	"BaseObject.h"
 	"defs.h"
 
-1711693183 source:d:\game_sdl\enemyobject.cpp
+1714127214 source:d:\game_sdl\enemyobject.cpp
 	"EnemyObject.h"
 
-1711693183 d:\game_sdl\enemyobject.h
-	"BossObject.h"
+1714127214 d:\game_sdl\enemyobject.h
+	"Boss.h"
 
-1709187641 source:d:\game_sdl\gamemap.cpp
+1714033608 source:d:\game_sdl\gamemap.cpp
 	"GameMap.h"
 
-1711810821 d:\game_sdl\gamemap.h
-	"BaseFunc.h"
+1714128267 d:\game_sdl\gamemap.h
+	"Graphics.h"
 	"BaseObject.h"
 	"defs.h"
 
-1711884699 source:d:\game_sdl\main.cpp
+1714128239 source:d:\game_sdl\main.cpp
 	"logic.h"
-	"BaseFunc.h"
+	"Graphics.h"
 	"Menu.h"
 
-1711884699 d:\game_sdl\logic.h
-	"BaseFunc.h"
-	"MainObject.h"
+1714128247 d:\game_sdl\logic.h
+	"Graphics.h"
+	"Player.h"
 	"GameMap.h"
 	"defs.h"
-	"BossObject.h"
-	"EnemyObject.h"
+	"Boss.h"
+	"Enemy.h"
 	"Menu.h"
 	"MiniMap.h"
 
-1711693183 d:\game_sdl\mainobject.h
+1713524510 d:\game_sdl\mainobject.h
 	"BaseObject.h"
 	"BulletObject.h"
 	"BaseFunc.h"
 	"defs.h"
 
-1711704910 d:\game_sdl\menu.h
-	"BaseFunc.h"
+1714128289 d:\game_sdl\menu.h
+	"Graphics.h"
 
-1711883726 source:d:\game_sdl\mainobject.cpp
+1713857004 source:d:\game_sdl\mainobject.cpp
 	"MainObject.h"
 
 1705857752 d:\sdl_lib\sdl2_mixer-devel-2.8.0-mingw\sdl2_mixer-2.8.0\x86_64-w64-mingw32\include\sdl2\sdl_mixer.h
@@ -1389,8 +1389,59 @@
 	"begin_code.h"
 	"close_code.h"
 
-1711886881 d:\game_sdl\minimap.h
-	"BaseFunc.h"
+1714640840 d:\game_sdl\minimap.h
+	"Graphics.h"
 	"defs.h"
 	"GameMap.h"
+
+1714128283 d:\game_sdl\player.h
+	"BaseObject.h"
+	"Dart.h"
+	"Graphics.h"
+	"defs.h"
+
+1714128275 d:\game_sdl\boss.h
+	"BaseObject.h"
+	"Graphics.h"
+	"defs.h"
+
+1714127488 source:d:\game_sdl\player.cpp
+	"Player.h"
+
+1714127214 source:d:\game_sdl\boss.cpp
+	"Boss.h"
+
+1714127301 d:\game_sdl\enemy.h
+	"Boss.h"
+
+1714127301 source:d:\game_sdl\enemy.cpp
+	"Enemy.h"
+
+1714127488 d:\game_sdl\dart.h
+	"BaseObject.h"
+	"defs.h"
+
+1714127488 source:d:\game_sdl\dart.cpp
+	"Dart.h"
+
+1714128239 source:d:\game_sdl\graphics.cpp
+	"Graphics.h"
+
+1714128221 d:\game_sdl\graphics.h
+	<Windows.h>
+	<iostream>
+	<string>
+	<SDL.h>
+	<SDL_image.h>
+	<SDL_ttf.h>
+	<SDL_mixer.h>
+	<math.h>
+	<SDL_keyboard.h>
+	<vector>
+	<cstdlib>
+	<chrono>
+	<windows.h>
+	<fstream>
+	<string>
+	"defs.h"
 

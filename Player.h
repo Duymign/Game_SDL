@@ -1,13 +1,13 @@
-#ifndef _MainObject_H
-#define _MainObject_H
+#ifndef _Player_H
+#define _Player_H
 
 #include "BaseObject.h"
-#include "BulletObject.h"
-#include "BaseFunc.h"
+#include "Dart.h"
+#include "Graphics.h"
 #include "defs.h"
 using namespace std::chrono;
 
-class MainObject:public BaseObject
+class Player:public BaseObject
 {
 private:
     int hp;
@@ -15,7 +15,7 @@ private:
     int status;
     bool on_the_ground;
     float y_;
-    vector <BulletObject*> bullets;
+    vector <Dart*> darts;
     float x_pos;
     float y_pos;
 
@@ -88,8 +88,8 @@ private:
     Mix_Chunk* gShoot;
 
 public:
-    MainObject();
-    ~MainObject();
+    Player();
+    ~Player();
     void setTime();
     SDL_Rect get_attack_rect(){return rectAttack;}
     void setRect(const int &x, const int &y){
@@ -156,7 +156,7 @@ public:
     void MoveInAir(const MAP& mapdata, Graphics &graphics);
     void Jump(Graphics &graphics);
     void attack(Graphics &graphics);
-    vector <BulletObject*> get_list_bullet(){return bullets;}
+    vector <Dart*> get_list_bullet(){return darts;}
     void shoot(Graphics &graphics);
     void skill( Graphics &graphics, const MAP& mapdata);
     void check_map_collision(const MAP &map_data);
@@ -190,8 +190,10 @@ public:
         y_pos =y;
     }
 
-    int get_x_pos(){return x_pos;}
-    int get_y_pos(){return y_pos;}
+    float get_x_pos(){return x_pos;}
+    float get_y_pos(){return y_pos;}
+    void set_pos(const float &x, const float &y){x_pos = x; y_pos = y;}
+
     void setMapXY(const int& x, const int &y){map_x = x; map_y = y;}
     void renderPlayerNotMove(Graphics &graphics);
     bool get_status_attack(){return attack_;}
@@ -207,4 +209,4 @@ public:
     void loadSound(Graphics& graphics);
 
 };
-#endif // _MainObject_H
+#endif // _Player_H

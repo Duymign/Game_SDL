@@ -1,7 +1,7 @@
 #ifndef _GameMap_H
 #define _GameMap_H
 
-#include "BaseFunc.h"
+#include "Graphics.h"
 #include "BaseObject.h"
 #include "defs.h"
 class TileMap : public BaseObject

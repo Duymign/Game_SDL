@@ -1,11 +1,11 @@
-#ifndef BossObject_H
-#define BossObject_H
+#ifndef Boss_H
+#define Boss_H
 
 #include "BaseObject.h"
-#include "BaseFunc.h"
+#include "Graphics.h"
 #include "defs.h"
 using namespace std::chrono;
-class BossObject :public BaseObject
+class Boss :public BaseObject
 {
 protected:
     float x_pos;
@@ -51,8 +51,8 @@ protected:
     Mix_Chunk *gAttack;
 
 public:
-    BossObject();
-    ~BossObject(){;}
+    Boss();
+    ~Boss(){;}
     void setTime();
     void loseHp(const int &damage);
     int getHp(){return hp;}
@@ -61,7 +61,7 @@ public:
     void set_clip_attack();
     void set_clip_die();
     void Run(Graphics &graphics);
-    void setPos(const int &x, const int &y, const int& mapx, const int& mapy);
+    void setPos(const float &x, const float &y, const float& mapx, const float& mapy);
     enum walkStatus{
         walkRight = 0,
         walkLeft = 1,
@@ -101,4 +101,4 @@ public:
 
 
 
-#endif // BossObject_H
+#endif // Boss_H

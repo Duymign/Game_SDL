@@ -1,9 +1,9 @@
-#ifndef EnemyObject_H
-#define EnemyObject_H
-#include "BossObject.h"
+#ifndef Enemy_H
+#define Enemy_H
+#include "Boss.h"
 using namespace std::chrono;
 
-class EnemyObject : public BossObject
+class Enemy : public Boss
 {
 private:
     SDL_Rect attackRect;
@@ -19,8 +19,8 @@ private:
     duration<int, milli> timeSinceLastHurt;
 
 public:
-    EnemyObject();
-    ~EnemyObject();
+    Enemy();
+    ~Enemy();
     void Run(Graphics &graphics);
     void Attack(Graphics &graphics);
     void setImg(Graphics &graphics);

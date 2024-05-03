@@ -1,5 +1,5 @@
-#ifndef _BaseFunc_H
-#define _BaseFunc_H
+#ifndef _Graphics_H
+#define _Graphics_H
 
 #include <Windows.h>
 #include <iostream>

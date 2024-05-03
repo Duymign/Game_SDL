@@ -1,7 +1,7 @@
 #ifndef _MINIMAP_H
 #define _MINIMAP_H
 
-#include "BaseFunc.h"
+#include "Graphics.h"
 #include "defs.h"
 #include "GameMap.h"
 class MiniMap
@@ -17,7 +17,6 @@ private:
 public:
     MiniMap(Graphics &graphics)
     {
-
         x = 1000;
         y = 100;
         mainRect.w = 5;

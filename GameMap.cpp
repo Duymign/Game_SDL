@@ -5,7 +5,6 @@ void GameMap:: loadMap()
     ifstream file(filename);
     if (file.is_open())
     {
-
         game_map.max_x = game_map.max_y =0;
     for (int i=0; i < MAX_MAP_Y; i++)
     {
@@ -50,6 +49,7 @@ void GameMap::loadMapTiles(Graphics &graphics)
         }
         tile_map[i].setTexture(Name, graphics);
     }
+
 }
 void GameMap::renderMap(Graphics &graphics)
 {
