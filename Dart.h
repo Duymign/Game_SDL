@@ -30,7 +30,7 @@ public:
     {
         ismove = b;
     }
-    void MoveBullet(const int& x_border, const int &y_border);
+    void MoveDart(const int& x_border, const int &y_border);
 
     enum BulletStatus
     {

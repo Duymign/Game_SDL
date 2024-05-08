@@ -1,5 +1,6 @@
 #ifndef _LOGIC__H
 #define _LOGIC__H
+
 #include "Graphics.h"
 #include "Player.h"
 #include "GameMap.h"
@@ -19,7 +20,7 @@ struct Game
     SDL_Rect attackRect;
     SDL_Rect mainRect;
 
-    Dart bullet;
+    Dart dart;
     GameMap game_map;
     MAP mapdata ;
     SDL_Event event;
@@ -160,7 +161,7 @@ struct Game
             if(p_dart!= NULL )
             {
             if (p_dart->isMoving()){
-                    p_dart->MoveBullet(SCREEN_WIDTH, SCREEN_HEIGHT);
+                    p_dart->MoveDart(SCREEN_WIDTH, SCREEN_HEIGHT);
                     SDL_Rect dartRect = p_dart->getRect();
                     dartRects.push_back(dartRect);
                     ++it;

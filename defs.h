@@ -49,7 +49,7 @@ const float gravity_speed = 1.2;
 //Bullet Object
 const int Width_Bullet = 35;
 const int Height_Bullet = 35;
-#define BULLET_SPEED 25
+#define DART_SPEED 25
 
 //Boss
 #define Width_boss_object 150
