@@ -17,7 +17,6 @@ int main(int argc, char* argv[])
     game.continueGame(quit, menu, graphics);
     while(!quit)
     {
-
         while (game.enemy_num < game.enemy_max_num)
             {
                 game.InitEnemy(graphics);
