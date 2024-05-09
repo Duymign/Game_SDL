@@ -15,12 +15,17 @@ private:
     SDL_Texture* winGame;
     SDL_Texture* continueGame;
     SDL_Texture* playAgain;
+    SDL_Texture* instruction;
+    SDL_Texture* guideMenu;
+    SDL_Texture* Back;
 
     SDL_Rect newGameRect;
     SDL_Rect exitRect;
     SDL_Rect textRect;
     SDL_Rect resultRect;
     SDL_Rect continueRect;
+    SDL_Rect guideRect = {SCREEN_WIDTH/2 - 250/2, 650, 250, 50};
+    SDL_Rect backButton = {20, 20, 100, 25};
 
     int result;
     int optionResult;
@@ -34,6 +39,8 @@ public:
         exit = graphics.createText("Exit", font, color);
         playAgain = graphics.createText("Play Again !", font, color);
         continueGame = graphics.createText("Continue", font, color);
+        instruction = graphics.createText("Guide", font , color);
+
         menuBackGround = graphics.loadTexture("IMG/Menu.png");
         option = graphics.loadTexture("IMG/Option.png");
 
@@ -63,6 +70,8 @@ public:
 
         result = pause;
         optionResult =Continue;
+        guideMenu = graphics.loadTexture("IMG/Guide.png");
+
     }
     ~Menu(){;}
     void RenderMenu(Graphics &graphics)
@@ -112,7 +121,8 @@ public:
             color = {0, 0, 0, 255};
             exit = graphics.createText("Exit", font, color);
         }
-        RenderMenu(graphics);
+
+
         switch(event.type)
         {
             case SDL_MOUSEBUTTONDOWN:
@@ -125,8 +135,18 @@ public:
             {
                 quitGame = true;
                 quitMenu = true;
+            }else if (x >= guideRect.x && x <= guideRect.x + guideRect.w && y >= guideRect.y && y <= guideRect.y + guideRect.h)
+            {
+                quitGame = false;
+                quitMenu = false;
+                optionResult = guide;
+            }else if (x >= backButton.x && x <= backButton.x + backButton.w && y >= backButton.y && y <= backButton.y + backButton.h)
+            {
+                optionResult = go_back;
             }
         }
+        RenderMenu(graphics);
+        renderInstruction(graphics, x, y);
         SDL_Delay(20);
     }
     enum resultType{
@@ -167,6 +187,7 @@ public:
                 textRect.w = 160;
                 graphics.RenderObject(continueGame, textRect);
         }
+
     }
     void handleOptionAfterGame(SDL_Event &event, bool &quitMenu, bool &quitGame, Graphics &graphics)
     {
@@ -204,7 +225,7 @@ public:
             color = {0, 0, 0, 255};
             exit = graphics.createText("Exit", font, color);
         }
-        menuAfterGame(graphics);
+
         switch(event.type)
         {
             case SDL_MOUSEBUTTONDOWN:
@@ -225,7 +246,18 @@ public:
                 quitGame = true;
                 quitMenu = true;
             }
+            else if (x >= guideRect.x && x <= guideRect.x + guideRect.w && y >= guideRect.y && y <= guideRect.y + guideRect.h)
+            {
+                quitGame = false;
+                quitMenu = false;
+                optionResult = guide;
+            }else if (x >= backButton.x && x <= backButton.x + backButton.w && y >= backButton.y && y <= backButton.y + backButton.h)
+            {
+                optionResult = go_back;
+            }
         }
+        menuAfterGame(graphics);
+        renderInstruction(graphics, x, y);
         SDL_Delay(20);
     }
     int getResult()
@@ -240,11 +272,40 @@ public:
     {
         Continue = 0,
         restart = 1,
+        guide = 2,
+        go_back = 3,
     };
 
     int getOption()
     {
         return optionResult;
+    }
+    void renderInstruction(Graphics& graphics, const int& x, const int& y)
+    {
+        if (optionResult == guide)
+        {
+            if (x >= backButton.x && x <= backButton.x + backButton.w && y >= backButton.y && y <= backButton.y + backButton.h)
+            {
+                color = {255, 0, 0, 255};
+                Back= graphics.createText("BACK", font, color);
+            }else{
+                color = {255, 255, 0, 255};
+                Back= graphics.createText("BACK", font, color);
+            }
+            graphics.RenderBackground(guideMenu);
+            graphics.RenderObject(Back, backButton);
+            return;
+        }
+        if (x >= guideRect.x && x <= guideRect.x + guideRect.w && y >= guideRect.y && y <= guideRect.y + guideRect.h)
+        {
+            color = {255, 0, 0, 255};
+            instruction= graphics.createText("GUIDE", font, color);
+
+        }else{
+            color = {255, 255, 0, 255};
+            instruction = graphics.createText("GUIDE", font, color);
+        }
+        graphics.RenderObject(instruction,guideRect );
     }
 };
 #endif // MENU_H

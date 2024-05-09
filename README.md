@@ -1,2 +1,3 @@
 # GameSDL
-Game sử dụng thư viện SDL2.0
+Họ tên: Vũ Đức Duy
+MSSV: 23021507

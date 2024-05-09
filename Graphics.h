@@ -63,7 +63,6 @@ struct Graphics
 
     struct MAP
     {
-        public:
         float start_x;
         float start_y;
 

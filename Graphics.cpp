@@ -15,7 +15,7 @@ SDL_Window* Graphics::initSDL()
     if (!IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG))
         logErrorAndExit( "SDL_image error:", IMG_GetError());
 
-    SDL_Window* WINDOW = SDL_CreateWindow("SDL_Test", SDL_WINDOWPOS_CENTERED,
+    SDL_Window* WINDOW = SDL_CreateWindow("Dragon Boy", SDL_WINDOWPOS_CENTERED,
        SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 
 
@@ -25,7 +25,6 @@ SDL_Window* Graphics::initSDL()
 }
 SDL_Renderer* Graphics::createRenderer()
 {
-
     //Khi chạy trong môi trường bình thường (không chạy trong máy ảo)
     SDL_Renderer* Renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED |
                                               SDL_RENDERER_PRESENTVSYNC);

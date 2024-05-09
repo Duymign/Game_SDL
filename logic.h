@@ -13,7 +13,6 @@ using namespace std::chrono;
 
 struct Game
 {
-
     Player character;
     SDL_Texture* background;
     SDL_Texture* bull;
