@@ -155,12 +155,9 @@ void Player::Action(SDL_Event &event)
         {
             switch (event.key.keysym.sym)
             {
-                case SDLK_LEFT:
                 case SDLK_a:status = walkLeft;left_ = true;right_ = false;break;
 
-                case SDLK_RIGHT:
                 case SDLK_d:status = walkRight;right_ = true;left_ = false;break;
-
 
                 case SDLK_w:
                 if (on_the_ground == true)
