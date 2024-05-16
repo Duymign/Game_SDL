@@ -25,15 +25,7 @@ int main(int argc, char* argv[])
             graphics.RenderBackground(game.background);
             game.game_map.renderMap(graphics);
             graphics.RenderSkill(game.character.get_time_set_skill(), game.character.get_time_set_attack(), game.character.get_time_set_shoot());
-            if (game.list_of_enemy.size() == 0)
-            {
-                if (game.character.get_x_pos() > 83 * TILE_SIZE && game.mapdata.tile[5][53] != 12)
-                {
-                    game.mapdata.tile[5][82] = 12;
-                    game.mapdata.tile[6][82] = 11;
-                }
-                game.setBoss();
-            }
+
             if (game.list_of_enemy.size() != 0)
             {
                 game.doEnemy(graphics);
@@ -46,6 +38,17 @@ int main(int argc, char* argv[])
                 graphics.RenderBossHealthBar(game.bossRect, game.boss.getHp(), BOSS_MAX_HP);
                 game.checkColision1(graphics);//BossAttackPlayer
                 game.checkColision2(graphics);//PlayerAttackBoss
+                game.checkColision7(graphics);//BossUseSkillAttack
+
+            }
+            if (game.list_of_enemy.size() == 0)
+            {
+                if (game.character.get_x_pos() > 83 * TILE_SIZE && game.mapdata.tile[5][53] != 12)
+                {
+                    game.mapdata.tile[5][82] = 12;
+                    game.mapdata.tile[6][82] = 11;
+                }
+                game.setBoss();
             }
             graphics.RenderHealthBar();
             game.doPlayer(quit, graphics, menu);

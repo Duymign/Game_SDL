@@ -100,6 +100,7 @@ struct Game
         boss.set_clip_run();
         boss.set_clip_attack();
         boss.set_clip_die();
+        boss.set_clip_skill();
         boss.loadSound(graphics);
         //graphics.RenderObject(boss.get_texture_left)
     }
@@ -284,6 +285,9 @@ struct Game
                 boss.change_status_attack(true);
                 boss.change_status_run(false);
             }
+            boss.UseSkill(graphics);
+            boss.moveSkill(graphics);
+
             boss.Attack(graphics);
         }
     }
@@ -558,8 +562,29 @@ void checkColision2(Graphics &graphics) //Player Attack Boss
             {
                 character.loseHp(ENEMY_DAMGE);
                 graphics.hpRect.w = 190.0 *(float)character.getHp()/Main_Max_Hp;
+
             }
         }
+    }
+    void checkColision7(Graphics &graphics)//Boss Use Skill Attack Player
+    {
+        float x = boss.get_x_skill_pos();
+        float y = boss.get_y_skill_pos();
+        bool col7 = false;
+        if (y + boss_heigh_skill < character.get_y_pos()){col7 = false;}
+        else if (y + 20> character.get_y_pos() + Height_main_Object) {col7 = false;}
+        else if (x + boss_width_skill -10 < character.get_x_pos()) {col7 = false;}
+        else if (x + 10> character.get_x_pos() + Width_main_object) {col7 = false;}
+        else {
+            col7  = true;
+        }
+        if (col7 == true && boss.isUseSkill())
+        {
+            character.loseHp(BOSS_SKILL_DAMAGE);
+            graphics.hpRect.w = 190.0 *(float)character.getHp()/Main_Max_Hp;
+            cout << character.getHp() << endl;
+        }
+
     }
     void restartGame(Graphics& graphics)
     {

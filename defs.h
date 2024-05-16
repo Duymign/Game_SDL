@@ -46,9 +46,9 @@ const float gravity_speed = 1.2;
 #define SHOOT_DAMGE 15
 #define SKILL_DAMGE 20
 
-//Bullet Object
-const int Width_Bullet = 35;
-const int Height_Bullet = 35;
+//Dart
+const int Width_Dart = 35;
+const int Height_Dart = 35;
 #define DART_SPEED 25
 
 //Boss
@@ -60,9 +60,17 @@ const int boss_frame_width_attack = 285;
 const int boss_frame_height_attack = 261;
 const int boss_frame_height_die = 245;
 const int boss_frame_width_die = 1800/6;
+const int boss_frame_height_skill = 246;
+const int boss_frame_width_skill = 850/5;
+const int boss_skill_speed = 10;
+const int boss_width_skill = 70;
+const int boss_heigh_skill = 200;
+
+
 const int boss_speed = character_speed;
 #define BOSS_MAX_HP 1000
-#define BOSS_DAMAGE 5
+#define BOSS_DAMAGE 10
+#define BOSS_SKILL_DAMAGE 15
 
 //Enemy
 #define Width_enemy_object 80

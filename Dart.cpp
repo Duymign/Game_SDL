@@ -16,8 +16,8 @@ void Dart::setRect(const int &x,const int &y)
     {
         rect.x = x;
         rect.y = y;
-        rect.h = Height_Bullet;
-        rect.w = Width_Bullet;
+        rect.h = Height_Dart;
+        rect.w = Width_Dart;
 
     }
 void Dart::MoveDart(const int& x_border, const int &y_border)

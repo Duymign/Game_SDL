@@ -551,11 +551,10 @@ void Player::centre_on_map(MAP& map_data)
 }
 void Player::loseHp(const int &damage)
 {
-    if (damage == BOSS_DAMAGE && timeSinceLastLoseHp.count() >= 1400)
+    if ((damage == BOSS_DAMAGE || damage == BOSS_SKILL_DAMAGE) && timeSinceLastLoseHp.count() >= 1400)
     {
         hp-=damage;
         lastLoseHp = currentTime;
-
 
     }else if (damage == ENEMY_DAMGE && timeSinceLastLoseHp.count() >= 150 * 4)
     {

@@ -1,6 +1,7 @@
 #include "Boss.h"
 Boss::Boss()
 {
+    range_of_skill = 0;
     rect.x = 0;
     rect.y = 0;
     rect.w = Width_boss_object;
@@ -16,15 +17,22 @@ Boss::Boss()
     dieRect.w = Width_boss_object * 1.5;
     dieRect.h = Height_boss_object;
 
+    skillRect.w = boss_width_skill;
+    skillRect.h = boss_heigh_skill;
+
+    move_skill = false;
     frame_attack = 6;
     frame_run = -1;
     frame_die = -1;
+    frame_skill = -1;
 
     lastAttack = high_resolution_clock::now();
     lastRun = high_resolution_clock::now();
     lastLoseHp = high_resolution_clock::now();
     currentTime = high_resolution_clock::now();
     lastDie = high_resolution_clock::now();
+    lastUseSkill = high_resolution_clock::now();
+    lastSkillFrame = high_resolution_clock::now();
 }
 
 void Boss ::setImg(Graphics &graphics)
@@ -37,8 +45,21 @@ void Boss ::setImg(Graphics &graphics)
     Attack_Left = graphics.loadTexture("BOSS_IMG/Boss_Attack_Left.png");
     Die_Right = graphics.loadTexture("BOSS_IMG/Boss_Die_Right.png");
     Die_Left = graphics.loadTexture("BOSS_IMG/Boss_Die_Left.png");
+    Skill = graphics.loadTexture("BOSS_IMG/Boss_Skill.png");
 }
-
+void Boss::set_clip_skill()
+{
+    if (boss_frame_width_skill > 0 && boss_frame_height_skill > 0)
+    {
+        for (int i=0; i < 5; i++)
+        {
+            frame_clip_skill[i].x = boss_frame_width_skill * i;
+            frame_clip_skill[i].y = 0;
+            frame_clip_skill[i].w = boss_frame_width_skill;
+            frame_clip_skill[i].h = boss_frame_height_skill;
+        }
+    }
+}
 void Boss::set_clip_run()
 {
     if (boss_frame_width_run > 0 && boss_frame_height_run > 0)
@@ -172,6 +193,8 @@ void Boss::setTime()
     timeSinceLastRun = duration_cast<milliseconds> (currentTime - lastRun);
     timeSinceLastLoseHp = duration_cast<milliseconds> (currentTime - lastLoseHp);
     timeSinceLastDie = duration_cast<milliseconds> (currentTime - lastDie);
+    timeSinceLastUseSkill = duration_cast<milliseconds> (currentTime - lastUseSkill);
+    timeSinceLastSkillFrame = duration_cast<milliseconds> (currentTime - lastSkillFrame);
 }
 void Boss::loseHp(const int &damge)
 {
@@ -200,7 +223,80 @@ void Boss::Die(Graphics& graphics)
         graphics.RenderFrame(Die_Left, currentClip, dieRect);
     }
 }
+void Boss::UseSkill(Graphics &graphics)
+{
+    if (rect.x > 0 && rect.x <= SCREEN_WIDTH)
+    {
+        if (timeSinceLastUseSkill.count() >= 2500)
+        {
+            _attack = true;
+        }
+        if (timeSinceLastUseSkill.count() >= 2500 && frame_attack ==5)
+        {
+            if (status == walkLeft)
+            {
+                statusSkill = walkLeft;
+                x_pos_skill = x_pos;
+                skillRect.y = rect.y + Height_boss_object - skillRect.h;
+                y_pos_skill = skillRect.y;
+            }else{
+                statusSkill = walkRight;
+                x_pos_skill = x_pos + attackRect.w;
+                skillRect.y = rect.y + Height_boss_object - skillRect.h;
+                y_pos_skill = skillRect.y;
+            }
+            move_skill = true;
+            lastUseSkill = currentTime;
+        }
+    }
+}
+void Boss::moveSkill(Graphics &graphics)
+{
+    if (range_of_skill >= 120 )
+        {
+            move_skill = false;
+            range_of_skill = 0;
+        }
+    if (move_skill == true)
+    {
 
+        if (statusSkill == walkRight)
+        {
+            x_pos_skill += boss_skill_speed;
+            skillRect.x = x_pos_skill - map_x;
+            range_of_skill ++;
+        }
+        else
+        {
+            x_pos_skill -= boss_skill_speed;
+            skillRect.x = x_pos_skill - map_x;
+            range_of_skill ++;
+        }
+    }
+
+    if (timeSinceLastSkillFrame.count() >= 100 && move_skill == true)
+    {
+        if (frame_skill < 4)
+        {
+            frame_skill ++;
+
+        }else{
+            frame_skill = 0;
+        }
+        SDL_Rect* currentClip = &frame_clip_skill[frame_skill];
+        graphics.RenderFrame(Skill, currentClip, skillRect);
+        lastSkillFrame = currentTime;
+    }else if (move_skill == true)
+    {
+        SDL_Rect* currentClip = &frame_clip_skill[frame_skill];
+        graphics.RenderFrame(Skill, currentClip, skillRect);
+    }
+    else if (move_skill == false)
+    {
+        frame_skill =-1;
+    }
+
+}
 void Boss::reset()
 {
     rect.x = 0;
