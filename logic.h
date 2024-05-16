@@ -582,7 +582,6 @@ void checkColision2(Graphics &graphics) //Player Attack Boss
         {
             character.loseHp(BOSS_SKILL_DAMAGE);
             graphics.hpRect.w = 190.0 *(float)character.getHp()/Main_Max_Hp;
-            cout << character.getHp() << endl;
         }
 
     }
@@ -604,7 +603,6 @@ void checkColision2(Graphics &graphics) //Player Attack Boss
     }
     void saveGame(Menu& menu)
     {
-        cout << character.get_x_pos() << endl;
         ofstream fileMain("main.txt");
         fileMain << menu.getResult() << " ";
         fileMain << character.get_x_pos() << " " << character.get_y_pos() << " ";
