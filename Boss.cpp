@@ -305,6 +305,10 @@ void Boss::reset()
     status = walkLeft;
     x_pos = 0;
     y_pos = 0;
+    x_pos_skill =0;
+    y_pos_skill =0;
+    skillRect.x = 0;
+    skillRect.y =0;
     hp = BOSS_MAX_HP;
     _attack = false;
     _run = false;
