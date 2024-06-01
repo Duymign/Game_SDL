@@ -67,7 +67,7 @@ protected:
 
 public:
     Boss();
-    ~Boss(){;}
+    ~Boss();
     void setTime();
     void loseHp(const int &damage);
     int getHp(){return hp;}

@@ -50,6 +50,7 @@ private:
     SDL_Texture* dieRight;
     SDL_Texture* dieLeft;
 
+
     high_resolution_clock::time_point lastWalk ;
     high_resolution_clock::time_point lastShoot ;
     high_resolution_clock::time_point lastAttack ;
@@ -80,7 +81,7 @@ private:
     int frame_skill;
     int frame_die;
 
-    bool up_ = false, down_ = false, left_ = false, right_ = false, attack_ = false, shoot_= false, skill_ = false;
+    bool up_, down_, left_, right_, attack_, shoot_, skill_;
     //Sound
     Mix_Chunk* gJump;
     Mix_Chunk* gAttack;

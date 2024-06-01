@@ -14,9 +14,15 @@ int main(int argc, char* argv[])
     game.Init(graphics);
     MiniMap miniMap(graphics);
 
+    Uint64 frameStart;
+    const int frameDelay = 1000 / 60;
+
     game.continueGame(quit, menu, graphics);
+
     while(!quit)
     {
+        frameStart = SDL_GetPerformanceCounter();
+
         while (game.enemy_num < game.enemy_max_num)
             {
                 game.InitEnemy(graphics);
@@ -43,7 +49,7 @@ int main(int argc, char* argv[])
             }
             if (game.list_of_enemy.size() == 0)
             {
-                if (game.character.get_x_pos() > 83 * TILE_SIZE && game.mapdata.tile[5][53] != 12)
+                if (game.character.get_x_pos() > 83 * TILE_SIZE && game.mapdata.tile[5][53] != 12 && game.level == 1)
                 {
                     game.mapdata.tile[5][82] = 12;
                     game.mapdata.tile[6][82] = 11;
@@ -51,11 +57,13 @@ int main(int argc, char* argv[])
                 game.setBoss();
             }
             graphics.RenderHealthBar();
-            game.doPlayer(quit, graphics, menu);
+
             miniMap.RenderMiniMap(game.mapdata, game.character.get_x_pos(), game.character.get_y_pos(), graphics);
+            game.doPlayer(quit, graphics, menu);
             graphics.PresentScr();
             if (game.character.getFrameDie() == 4 || game.character.getRect().y > SCREEN_HEIGHT)
             {
+                if (game.level == 2.5) game.level =2;
                 //MessageBox(NULL, "Game Over!", "Infor", MB_OK);
                 game.restartGame(graphics);
                 menu.setResult(0);//Lose
@@ -65,13 +73,16 @@ int main(int argc, char* argv[])
             }
             if (game.boss.get_frame_die() == 5)
             {
+                if (game.level == 2.5) game.level = 2;
                 game.restartGame(graphics);
                 menu.setResult(1);//Win
                 game.saveGame(menu);
                 game.doMenuAfterGame(quit, menu, graphics);
                 graphics.PresentScr();
             }
-        SDL_Delay(1000.0/60);
+
+        int frameTime = SDL_GetPerformanceCounter() - frameStart;
+        if (frameTime < frameDelay) SDL_Delay(frameDelay - frameTime);
     }
 
     graphics.quitSDL();

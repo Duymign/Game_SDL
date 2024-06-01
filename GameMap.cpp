@@ -1,7 +1,8 @@
 #include "GameMap.h"
 
-void GameMap:: loadMap()
+void GameMap:: loadMap(const char* filename)
 {
+
     ifstream file(filename);
     if (file.is_open())
     {
@@ -28,9 +29,9 @@ void GameMap:: loadMap()
         }
 
     }
-    cout << filename + " is open!";
+    //cout << filename + " is open!";
     }else{
-        cout << "Can not open file "+ filename;
+        cout << "Can not open file ";
     }
 
     file.close();
@@ -49,7 +50,6 @@ void GameMap::loadMapTiles(Graphics &graphics)
         }
         tile_map[i].setTexture(Name, graphics);
     }
-
 }
 void GameMap::renderMap(Graphics &graphics)
 {

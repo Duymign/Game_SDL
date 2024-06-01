@@ -7,7 +7,6 @@
 class Dart : public BaseObject
 {
 private:
-
     bool ismove;
     int bullet_status;
 

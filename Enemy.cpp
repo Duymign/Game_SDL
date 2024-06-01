@@ -33,7 +33,14 @@ Enemy::Enemy()
 }
 Enemy::~Enemy()
 {
-    ;
+    SDL_DestroyTexture(Run_Left);
+    SDL_DestroyTexture(Run_Right);
+    SDL_DestroyTexture(Attack_Right);
+    SDL_DestroyTexture(Attack_Left);
+    SDL_DestroyTexture(Hurt_Right);
+    SDL_DestroyTexture(Hurt_Left);
+    SDL_DestroyTexture(Die_Right);
+    SDL_DestroyTexture(Die_Left);
 }
 void Enemy::setImg(Graphics &graphics)
 {
@@ -201,14 +208,15 @@ void Enemy::check_map_collision(const MAP &mapdata)
 
     if (x1 >= 0 && x2 <= MAX_MAP_X && y1 >= 0 && y2 <= MAX_MAP_Y)
     {
-            if (mapdata.tile[y2][x2] == 0 && mapdata.tile[y2][x1] == 0)
+
+            if ((mapdata.tile[y2][x2] == 0 || mapdata.tile[y2][x2] >= 16) && (mapdata.tile[y2][x1] == 0 || mapdata.tile[y2][x1] >= 16))
             {
                 y_pos += TILE_SIZE;
             }
-            if(mapdata.tile[y2][x2] == 0)
+            if(mapdata.tile[y2][x2] == 0 || mapdata.tile[y2][x2] >= 16)
             {
                 status = walkLeft;
-            }else if (mapdata.tile[y2][x1] == 0)
+            }else if (mapdata.tile[y2][x1] == 0 || mapdata.tile[y2][x1] >= 16)
             {
                 status = walkRight;
             }

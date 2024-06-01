@@ -70,6 +70,7 @@ struct Graphics
         int max_y;
 
         int tile[MAX_MAP_Y][MAX_MAP_X];
+
         string name;
 
     };

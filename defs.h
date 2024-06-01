@@ -9,7 +9,7 @@
 #define MAX_MAP_X 120
 #define MAX_MAP_Y 12
 #define TILE_SIZE 64
-#define MAX_TILE 18
+#define MAX_TILE 19
 //
 const int fps = 50;
 

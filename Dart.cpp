@@ -10,7 +10,7 @@ Dart ::Dart()
 
 Dart :: ~Dart()
 {
-
+    SDL_DestroyTexture(object);
 }
 void Dart::setRect(const int &x,const int &y)
     {

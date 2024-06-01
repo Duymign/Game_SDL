@@ -47,7 +47,6 @@ void Graphics::quitSDL()
 	IMG_Quit();
 	TTF_Quit();
 	Mix_Quit();
-
 }
 void Graphics::waitUntilKeyPressed()
 {

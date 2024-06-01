@@ -18,16 +18,14 @@ class GameMap
 private:
     MAP game_map;
     TileMap tile_map[MAX_TILE];
-    string filename;
 public:
     GameMap()
     {
-        filename = "map.txt";
         game_map.start_x = 0;
         game_map.start_y = 0;
     }
     ~GameMap(){;}
-    void loadMap();
+    void loadMap(const char* filename);
     void loadMapTiles(Graphics &graphics);
     void renderMap(Graphics &graphics);
     void setMap(const MAP& mapdata)

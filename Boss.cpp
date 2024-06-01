@@ -34,7 +34,10 @@ Boss::Boss()
     lastUseSkill = high_resolution_clock::now();
     lastSkillFrame = high_resolution_clock::now();
 }
-
+Boss::~Boss()
+{
+    ;
+}
 void Boss ::setImg(Graphics &graphics)
 {
     Boss_Right = graphics.loadTexture("BOSS_IMG/Boss_Right.png");
@@ -225,7 +228,7 @@ void Boss::Die(Graphics& graphics)
 }
 void Boss::UseSkill(Graphics &graphics)
 {
-    if (rect.x > 0 && rect.x <= SCREEN_WIDTH)
+    //if (rect.x > 0 && rect.x <= SCREEN_WIDTH)
     {
         if (timeSinceLastUseSkill.count() >= 2500)
         {

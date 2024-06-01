@@ -1,8 +1,8 @@
 #include "Player.h"
 Player::Player()
 {
-    rect.x = 0;
-    rect.y = 0;
+    rect.x = 70;
+    rect.y = 20;
     rect.h =0;
     rect.w = 0;
     y_ =0;
@@ -24,7 +24,7 @@ Player::Player()
     object = NULL;
     hp = Main_Max_Hp;
     score = 0;
-    on_the_ground = false;
+    on_the_ground = true;
 
     lastWalk = high_resolution_clock::now();
     lastShoot = high_resolution_clock::now();
@@ -37,6 +37,8 @@ Player::Player()
     lastUseShoot = high_resolution_clock::now();
     lastDie = high_resolution_clock::now();
     currentTime = high_resolution_clock::now();
+
+    up_ = false; down_ = false; left_ = false ;right_ = false ; shoot_ = false ; attack_ = false ;up_ = false ;skill_ =false;
 
 }
 Player::~Player()

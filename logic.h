@@ -24,6 +24,7 @@ struct Game
     MAP mapdata ;
     SDL_Event event;
     bool quitMenu;
+    float level;
 
     Boss boss;
     SDL_Rect bossRect;
@@ -44,6 +45,7 @@ struct Game
         enemy_num =0;
         enemy_max_num = 6;
         enemy_x_pos = 23*TILE_SIZE;
+        level = 1;
     }
     void doMenu(bool &quit, Menu& menu, Graphics& graphics)
     {
@@ -57,6 +59,26 @@ struct Game
                 menu.handleOption(event, quitMenu, quit, graphics);
                 graphics.PresentScr();
             }
+        }
+        if (menu.getLevel() != 0)
+        {
+            if (menu.getLevel() == 1)
+            {
+                level = 1;
+                game_map.loadMap("map.txt");
+                mapdata = game_map.get_map_data();
+                menu.setLevel(0);
+                restartGame(graphics);
+            }else{
+                level = 2;
+                game_map.loadMap("map2.txt");
+                mapdata = game_map.get_map_data();
+                menu.setLevel(0);
+                restartGame(graphics);
+            }
+            character.setRect(80, 0);
+            //character.setPos(3200, 100);
+            mainRect = character.getRect();
         }
     }
     void doMenuAfterGame(bool &quit, Menu& menu, Graphics& graphics)
@@ -77,8 +99,38 @@ struct Game
             {
                 enemy_max_num =6;
                 enemy_num =0;
+                if (level == 2.5){
+                    level = 2;
+                    game_map.loadMap("map2.txt");
+                    mapdata = game_map.get_map_data();
+                }
+                menu.setLevel(0);
                 restartGame(graphics);
             }
+        if (menu.getLevel() != 0 )
+        {
+            if(menu.getLevel() != level)
+            {
+            if (menu.getLevel() == 1)
+            {
+                level = 1;
+                game_map.loadMap("map.txt");
+                mapdata = game_map.get_map_data();
+                menu.setLevel(0);
+
+            }else{
+                level = 2;
+                game_map.loadMap("map2.txt");
+                mapdata = game_map.get_map_data();
+                menu.setLevel(0);
+            }
+            }
+            restartGame(graphics);
+            character.setRect(80, 0);
+            //character.setPos(3200, 100);
+            mainRect = character.getRect();
+
+        }
     }
     void InitEnemy(Graphics& graphics)
     {
@@ -89,7 +141,7 @@ struct Game
         enemy->set_clip_hurt();
         enemy->set_clip_die();
         enemy->loadSound(graphics);
-        enemy->setPos(enemy_x_pos , 6 * TILE_SIZE -Height_enemy_object, mapdata.start_x, mapdata.start_y);
+        enemy->setPos(enemy_x_pos , 5 * TILE_SIZE -Height_enemy_object, mapdata.start_x, mapdata.start_y);
         list_of_enemy.push_back(enemy);
         enemy_x_pos += 8.5 *TILE_SIZE;
         enemy_num++;
@@ -106,7 +158,8 @@ struct Game
     }
     void InitPlayer(Graphics &graphics){
     //MainObject character;
-    character.setRect(70, 100);
+    character.setRect(80, 0);
+    //character.setPos(3200, 100);
     mainRect = character.getRect();
     character.setTexture("IMG/Character_Right.png", graphics);
     mainRect = character.getRect();
@@ -137,7 +190,6 @@ struct Game
     {
     background = graphics.loadTexture("IMG/background.jpg");
     graphics.RenderBackground(background);
-    game_map.loadMap();
     game_map.loadMapTiles(graphics);
     }
     void Init(Graphics& graphics)
@@ -145,7 +197,6 @@ struct Game
         InitBoss(graphics);
         InitPlayer(graphics);
         InitMap(graphics);
-        mapdata = game_map.get_map_data();
         mapdata.start_x = 0;
         mapdata.start_y = 0;
     }
@@ -177,7 +228,7 @@ struct Game
         }
         checkColision3(graphics, list_of_darts);
         checkColision4(graphics, list_of_darts);
-        dartRects.clear();
+         std::vector<SDL_Rect>().swap(dartRects);
     }
 
     void doPlayer(bool &quit, Graphics &graphics, Menu& menu)
@@ -210,6 +261,7 @@ struct Game
                 character.Action(event);
             }
         }
+        character.renderPlayerNotMove(graphics);
         character.Jump(graphics);
         character.walk(mapdata, graphics);
         character.MoveInAir(mapdata, graphics);
@@ -217,7 +269,6 @@ struct Game
         character.shoot(graphics);
         character.attack(graphics);
         character.skill(graphics, mapdata);
-        character.renderPlayerNotMove(graphics);
 
     }
     }
@@ -247,10 +298,26 @@ struct Game
     }
     void setBoss()
     {
-        if (character.get_x_pos() > 82 * TILE_SIZE && is_init_boss == false)
+        if (level == 1)
+        {
+        if (character.get_x_pos() > 82 * TILE_SIZE && is_init_boss == false )
         {
             is_init_boss = true;
             boss.setPos(100 * TILE_SIZE, 8 * TILE_SIZE - Height_boss_object, mapdata.start_x, mapdata.start_y);
+        }
+        }else if (level == 2)
+        {
+            if(character.get_x_pos() >= 97 * TILE_SIZE && character.get_y_pos() >= 5 * TILE_SIZE)
+            {
+                mapdata.start_x = 50 * TILE_SIZE - SCREEN_WIDTH/2;
+                mapdata.start_y =0;
+                character.setPos(50 * TILE_SIZE, 6* TILE_SIZE);
+                game_map.loadMap("map2_1.txt");
+                mapdata = game_map.get_map_data();
+                is_init_boss = true;
+                boss.setPos(75 * TILE_SIZE, 8 * TILE_SIZE - Height_boss_object, mapdata.start_x, mapdata.start_y);
+                level = 2.5;
+            }
         }
     }
     bool checkNearCharacter()
@@ -587,14 +654,19 @@ void checkColision2(Graphics &graphics) //Player Attack Boss
     }
     void restartGame(Graphics& graphics)
     {
+        //graphics.ClearScr();
+        std::vector<Enemy *>().swap(list_of_enemy);
         list_of_enemy.erase(list_of_enemy.begin(), list_of_enemy.end());
         enemy_max_num = 6;
         enemy_num =0;
         enemy_x_pos = 23*TILE_SIZE;
 
         is_init_boss = false;
-        mapdata.tile[5][82] = 0;
-        mapdata.tile[6][82] = 0;
+        if (level == 1)
+        {
+            mapdata.tile[5][82] = 0;
+            mapdata.tile[6][82] = 0;
+        }
         character.reset();
         boss.reset();
         game_map.setMap(mapdata);
@@ -608,6 +680,7 @@ void checkColision2(Graphics &graphics) //Player Attack Boss
         fileMain << character.get_x_pos() << " " << character.get_y_pos() << " ";
         fileMain << mapdata.start_x <<" " << mapdata.start_y << " ";
         fileMain << character.getHp() << " ";
+        fileMain << level << " ";
         fileMain.close();
 
         ofstream fileEnemy("enemy.txt");
@@ -625,7 +698,6 @@ void checkColision2(Graphics &graphics) //Player Attack Boss
         fileBoss << boss.get_x_pos() << " " << boss.get_y_pos() << " " << boss.getHp() << " ";
 
         fileBoss.close();
-
     }
     void resumeEnemy(Graphics &graphics)
     {
@@ -657,6 +729,10 @@ void checkColision2(Graphics &graphics) //Player Attack Boss
         boss.setPos(x_pos, y_pos, mapdata.start_x, mapdata.start_y);
         boss.setHp(hp);
         fileBoss.close();
+        if (level == 2.5)
+        {
+            is_init_boss = true;
+        }
     }
     void continueGame(bool &quit, Menu &menu, Graphics &graphics)
     {
@@ -664,7 +740,7 @@ void checkColision2(Graphics &graphics) //Player Attack Boss
         int result, hp;
         ifstream fileMain("main.txt");
         fileMain >> result;
-        cout << result << " ";
+        //cout << result << " ";
 
         //fileMain.seekg(1, ios_base::cur);
         if (result == Menu::pause)
@@ -673,6 +749,7 @@ void checkColision2(Graphics &graphics) //Player Attack Boss
             fileMain >> x_pos >> y_pos;
             character.setPos(x_pos, y_pos);
             fileMain>>mapdata.start_x >> mapdata.start_y >> hp ;
+            fileMain >> level;
             character.setMapXY(mapdata.start_x, mapdata.start_y);
             character.setRect(x_pos - mapdata.start_x, y_pos);
             character.setHp(hp);
@@ -682,14 +759,32 @@ void checkColision2(Graphics &graphics) //Player Attack Boss
             doMenuAfterGame(quit, menu, graphics);
             if (menu.getOption() == Menu::Continue)
             {
+
+                if (level == 1)
+                {
+                    game_map.loadMap("map.txt");
+                    mapdata = game_map.get_map_data();
+                }else if (level == 2)
+                {
+                    game_map.loadMap("map2.txt");
+                    mapdata = game_map.get_map_data();
+                }else if (level == 2.5)
+                {
+                    game_map.loadMap("map2_1.txt");
+                    mapdata = game_map.get_map_data();
+                }
                 resumeEnemy(graphics);
                 resumeBoss();
             }
         }else
         {
+            level =1;
+            game_map.loadMap("map.txt");
+            mapdata = game_map.get_map_data();
             doMenu(quit, menu, graphics);
         }
         fileMain.close();
+
     }
 };
 
