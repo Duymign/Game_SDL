@@ -60,7 +60,7 @@ struct Game
                 graphics.PresentScr();
             }
         }
-        if (menu.getLevel() != 0)
+        if (menu.getLevel() != 0 || menu.getOption() == Menu::restart)
         {
             if (menu.getLevel() == 1)
             {
@@ -99,15 +99,15 @@ struct Game
             {
                 enemy_max_num =6;
                 enemy_num =0;
-                if (level == 2.5){
-                    level = 2;
+                if (level == 2 || level == 2.5){
+                    level =2;
                     game_map.loadMap("map2.txt");
                     mapdata = game_map.get_map_data();
                 }
                 menu.setLevel(0);
                 restartGame(graphics);
             }
-        if (menu.getLevel() != 0 )
+        else if (menu.getLevel() != 0 )
         {
             if(menu.getLevel() != level)
             {
